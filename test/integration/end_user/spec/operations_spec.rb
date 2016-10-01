@@ -54,5 +54,14 @@ context 'operations' do
 
       expect(exit_status).to eq 0
     end
+    it 'custom monodevelop config exists' do
+      cmd = "cd #{test_ide_work} && ide \"cat /home/ide/.config/MonoDevelop-5.0/MonoDevelopProperties.xml\""
+
+      output, exit_status = run_cmd(cmd)
+      expect(output).to include('key="Testing.EnableUnitTestEditorIntegration" value="True"')
+      expect(output).to include('key="DefaultCommentFolding" value="False"')
+
+      expect(exit_status).to eq 0
+    end
   end
 end
