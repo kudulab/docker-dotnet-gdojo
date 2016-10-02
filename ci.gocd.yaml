@@ -1,0 +1,100 @@
+pipelines:
+  docker-mono-gide:
+    group: stcdev
+    label_template: "${git[:8]}"
+    materials:
+      git:
+        git: "git@git.ai-traders.com:stcdev/docker-mono-gide.git"
+        branch: ci
+      upstream:
+        pipeline: docker-mono-ide
+        stage: publish
+    stages:
+      - style_unit:
+          clean_workspace: true
+          jobs:
+            validate_repo:
+              resources:
+                - docker
+                - small
+              tasks:
+               - exec:
+                   command: ide
+                   arguments:
+                    - "bundle install && bundle exec rake go:git:destructive_validate_repo"
+            repocritic:
+              resources:
+                - docker
+                - small
+              tasks:
+                - script: ide "bundle install && bundle exec rake style:repocritic"
+      - build:
+          clean_workspace: true
+          jobs:
+            docker_image:
+              resources:
+                - docker
+                - small
+              artifacts:
+                - build:
+                    source: image/imagerc
+                    destination:
+              tasks:
+               - exec:
+                   command: ide
+                   arguments:
+                    - "bundle install && bundle exec rake build_configs_image && bundle exec rake build"
+      - itest:
+          clean_workspace: true
+          jobs:
+            kitchen:
+              resources:
+                - docker
+                - small
+            end_user:
+              resources:
+                - docker
+                - small
+              tasks:
+                - fetch:
+                    stage: build
+                    job: docker_image
+                    is_file: yes
+                    source: imagerc
+                    destination: image/
+                # imagerc file is sourced by dockerimagerake
+                - exec:
+                    command: ide
+                    arguments:
+                      - "bundle install && bundle exec rake install_ide && bundle exec rake end_user"
+      - release:
+          clean_workspace: true
+          jobs:
+            code:
+              resources:
+                - docker
+                - small
+              tasks:
+                - exec:
+                    command: ide
+                    arguments:
+                      - "bundle install && bundle exec rake release:conditional_release"
+      - publish:
+          clean_workspace: true
+          jobs:
+            docker_image:
+              resources:
+                - docker
+                - small
+              tasks:
+                - fetch:
+                    stage: build
+                    job: docker_image
+                    is_file: yes
+                    source: imagerc
+                    destination: image/
+                # imagerc file is sourced by dockerimagerake
+                - exec:
+                    command: ide
+                    arguments:
+                      - "bundle install && bundle exec rake publish:image"

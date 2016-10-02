@@ -57,12 +57,14 @@ context 'operations' do
     it 'custom monodevelop configs exist' do
       cmd = "cd #{test_ide_work} && ide \""\
         "cat /home/ide/.config/MonoDevelop-5.0/MonoDevelopProperties.xml && "\
-        "cat /home/ide/.local/share/MonoDevelop-5.0/Policies/Default.mdpolicy.xml\""
+        "cat /home/ide/.local/share/MonoDevelop-5.0/Policies/Default.mdpolicy.xml && "\
+        "cat /home/ide/.local/share/MonoDevelop-5.0/Snippets/log.template.xml\""
 
       output, exit_status = run_cmd(cmd)
       expect(output).to include('key="Testing.EnableUnitTestEditorIntegration" value="True"')
       expect(output).to include('key="DefaultCommentFolding" value="False"')
       expect(output).to include('<DirectoryNamespaceAssociation>Hierarchical</DirectoryNamespaceAssociation>')
+      expect(output).to include('static readonly log4net')
 
       expect(exit_status).to eq 0
     end
