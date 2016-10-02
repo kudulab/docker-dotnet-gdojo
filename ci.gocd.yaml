@@ -6,7 +6,7 @@ pipelines:
       git:
         git: "git@git.ai-traders.com:stcdev/docker-mono-gide.git"
         branch: ci
-      upstream:
+      monoide:
         pipeline: docker-mono-ide
         stage: publish
     stages:
@@ -18,16 +18,19 @@ pipelines:
                 - docker
                 - small
               tasks:
-               - exec:
-                   command: ide
-                   arguments:
-                    - "bundle install && bundle exec rake go:git:destructive_validate_repo"
+                - exec:
+                    command: ide
+                    arguments:
+                      - "bundle install && bundle exec rake go:git:destructive_validate_repo"
             repocritic:
               resources:
                 - docker
                 - small
               tasks:
-                - script: ide "bundle install && bundle exec rake style:repocritic"
+                - exec:
+                    command: ide
+                    arguments:
+                      - "bundle install && bundle exec rake style:repocritic"
       - build:
           clean_workspace: true
           jobs:
@@ -40,17 +43,13 @@ pipelines:
                     source: image/imagerc
                     destination:
               tasks:
-               - exec:
-                   command: ide
-                   arguments:
-                    - "bundle install && bundle exec rake build_configs_image && bundle exec rake build"
+                - exec:
+                    command: ide
+                    arguments:
+                      - "bundle install && bundle exec rake build"
       - itest:
           clean_workspace: true
           jobs:
-            kitchen:
-              resources:
-                - docker
-                - small
             end_user:
               resources:
                 - docker

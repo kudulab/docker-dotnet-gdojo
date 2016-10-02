@@ -29,7 +29,7 @@ end
 
 opts = DockerImageRake::Options.new(
   cookbook_dir: image_dir,
-  repo_dir: File.expand_path("#{image_dir}/.."), dry_run: true)
+  repo_dir: File.expand_path("#{image_dir}/.."))
 GitRake::GitTasks.new(opts)
 
 image_opts = DockerImageRake::ImageOptions.new(opts,
