@@ -22,6 +22,11 @@ context 'operations' do
       expect(output).to include('/ide/work')
       expect(output).to include('ide')
       expect(output).to include('using mono-gide')
+      expect(output).to include('Copying /ide/identity/.local/share/MonoDevelop-5.0')
+      expect(output).to include('Copying /ide/identity/.config/MonoDevelop-5.0')
+      expect(output).to include('Copying /ide/identity/.config/stetic')
+      expect(output).to include('Copying /ide/identity/.mono')
+      expect(output).to include('/ide/identity/.config/xbuild does not exist, won\'t copy')
       expect(output).not_to include('root')
       expect(exit_status).to eq 0
     end

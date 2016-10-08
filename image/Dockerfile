@@ -1,6 +1,6 @@
-# 0.1.0 must be replaced with existing git tag.
+# {{BASE_IMAGE_VERSION}} must be replaced with existing git tag.
 # I added {{ }} so that docker build fails if it is not replaced.
-FROM docker-registry.ai-traders.com/mono-ide:0.1.0
+FROM docker-registry.ai-traders.com/mono-ide:{{BASE_IMAGE_VERSION}}
 
 COPY etc_ide.d/scripts/* /etc/ide.d/scripts/
 COPY etc_ide.d/variables/* /etc/ide.d/variables/
