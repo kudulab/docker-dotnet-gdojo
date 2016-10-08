@@ -51,13 +51,21 @@ Those files are used inside the ide docker image:
 2. `~/.gitconfig` -- if exists locally, will be copied
 3. `~/.profile` -- will be generated on docker container start, in
    order to ensure current directory is `/ide/work`.
-4. `~/.config` -- if exists locally, will be copied. However, there is
+4. `~/.config/MonoDevelop`, `~/.config/MonoDevelop-5.0`, `~/.config/Nuget`,
+`~/.config/gtk-2.0`, `~/.config/stetic`, `~/.config/xbuild` -- if exist locally,
+ will be copied. However, there is
  already the file `/home/ide/.config/MonoDevelop-5.0/MonoDevelopProperties.xml`
  burned into mono-gide.
-5. `~/.local/share` -- if exists locally, will be copied. However, there are
+5. `~/.local/share/MonoDevelop-5.0` -- if exists locally, will be copied. However, there are
 already `/home/ide/.local/share/MonoDevelop-5.0/Policies/Default.mdpolicy.xml`
 and `/home/ide/.local/share/MonoDevelop-5.0/Snippets/log.template.xml` burned into mono-gide.
+5. `~/.local/share/recently-used.xbel` -- if exists locally, will be copied.
 6. `~/.mono` -- if exists locally, will be copied.
+
+It is recommended to start this image first with empty `~/.config/MonoDevelop-5.0`
+ and `~/.local/share/MonoDevelop-5.0` and then to copy them from mono-gide into
+ your home. When using mono-gide for the 2nd time, those dirs will be copied from
+ your home.
 
 ## Development
 No tests are repeated from mono-ide, because I expect them to be passed if
