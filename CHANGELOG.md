@@ -1,3 +1,5 @@
+* \#11100 install visual studio and extensions
+* CMD is now `/bin/bash`
 * dev: no ruby, but releaser (bash)
 
 ### 0.1.1 (8 Oct 2016)
