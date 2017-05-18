@@ -5,7 +5,7 @@ pipelines:
     materials:
       git:
         git: "git@git.ai-traders.com:stcdev/docker-mono-gide.git"
-        branch: ci
+        branch: master
         blacklist:
           - "doc/**/*"
           - "**/*.md"
