@@ -2,6 +2,8 @@
 releaser
 docker-ops
 image/Dockerfile
+Idefile.to_be_tested
+60-variables.sh
 
 **/*.html
 **/real_identity/**
