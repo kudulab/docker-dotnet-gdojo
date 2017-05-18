@@ -6,54 +6,48 @@ pipelines:
       git:
         git: "git@git.ai-traders.com:stcdev/docker-mono-gide.git"
         branch: ci
+        blacklist:
+          - "doc/**/*"
+          - "**/*.md"
       monoide:
         pipeline: docker-mono-ide
         stage: publish
     stages:
-      - style_unit:
+      - verify_version:
           clean_workspace: true
           jobs:
-            validate_repo:
+            verify_version:
               resources:
                 - docker
                 - small
               tasks:
-                - exec:
-                    command: ide
-                    arguments:
-                      - "bundle install && bundle exec rake go:git:destructive_validate_repo"
-            repocritic:
-              resources:
-                - docker
-                - small
-              tasks:
-                - exec:
-                    command: ide
-                    arguments:
-                      - "bundle install && bundle exec rake style:repocritic"
+               - exec:
+                  command: /bin/bash
+                  arguments:
+                    - -c
+                    - ./tasks verify_version
       - build:
           clean_workspace: true
           jobs:
             docker_image:
               resources:
-                - docker
-                - small
+                - docker_builder
               artifacts:
                 - build:
                     source: image/imagerc
                     destination:
               tasks:
-                - exec:
-                    command: ide
-                    arguments:
-                      - "bundle install && bundle exec rake build"
+               - exec:
+                  command: /bin/bash
+                  arguments:
+                    - -c
+                    - ops_docker_push=true ./tasks build
       - itest:
           clean_workspace: true
           jobs:
             end_user:
               resources:
-                - docker
-                - small
+                - docker_builder
               tasks:
                 - fetch:
                     stage: build
@@ -61,11 +55,11 @@ pipelines:
                     is_file: yes
                     source: imagerc
                     destination: image/
-                # imagerc file is sourced by dockerimagerake
                 - exec:
-                    command: ide
+                    command: /bin/bash
                     arguments:
-                      - "bundle install && bundle exec rake install_ide && bundle exec rake end_user"
+                      - -c
+                      - ./tasks itest
       - release:
           clean_workspace: true
           jobs:
@@ -75,16 +69,16 @@ pipelines:
                 - small
               tasks:
                 - exec:
-                    command: ide
+                    command: /bin/bash
                     arguments:
-                      - "bundle install && bundle exec rake release:conditional_release"
+                      - -c
+                      - ./tasks release
       - publish:
           clean_workspace: true
           jobs:
             docker_image:
               resources:
-                - docker
-                - small
+                - docker_builder
               tasks:
                 - fetch:
                     stage: build
@@ -92,8 +86,8 @@ pipelines:
                     is_file: yes
                     source: imagerc
                     destination: image/
-                # imagerc file is sourced by dockerimagerake
                 - exec:
-                    command: ide
+                    command: /bin/bash
                     arguments:
-                      - "bundle install && bundle exec rake publish:image"
+                      - -c
+                      - ./tasks publish

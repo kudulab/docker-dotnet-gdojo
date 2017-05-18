@@ -1,3 +1,5 @@
+* dev: no ruby, but releaser (bash)
+
 ### 0.1.1 (8 Oct 2016)
 
 * #100200 fix copying from `/ide/identity/.local` and do not copy the whole:

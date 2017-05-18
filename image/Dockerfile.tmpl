@@ -3,7 +3,6 @@
 FROM docker-registry.ai-traders.com/mono-ide:{{BASE_IMAGE_VERSION}}
 
 COPY etc_ide.d/scripts/* /etc/ide.d/scripts/
-COPY etc_ide.d/variables/* /etc/ide.d/variables/
 
 # (1 Oct 2016) apt-get install monodevelop gets latest monodevelop available
 # as .deb package, 5.10.0.871-0xamarin2, thanks to apt repo added in mono-ide:
@@ -45,3 +44,7 @@ RUN chown ide:ide /home/ide/.config/MonoDevelop-5.0/MonoDevelopProperties.xml \
 
 ENTRYPOINT ["/usr/bin/tini", "-g", "--", "/usr/bin/entrypoint.sh"]
 CMD ["monodevelop"]
+
+ARG this_image_tag_arg
+ARG this_image_name_arg
+ENV this_image_tag=${this_image_tag_arg} this_image_name=${this_image_name_arg}

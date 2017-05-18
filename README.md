@@ -1,9 +1,9 @@
 # docker-mono-gide
 
-An IDE docker image with C# CLI and graphical tools. Based on [mono-ide](http://gitlab.ai-traders.com/stcdev/docker-mono-ide).
+An IDE docker image with C# CLI and graphical tools. Based on [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide).
 
 ## Specification
-All what's in [mono-ide](http://gitlab.ai-traders.com/stcdev/docker-mono-ide) and:
+All what's in [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide) and:
  * MonoDevelop 5.10
  * monodevelop-nunit, monodevelop-versioncontrol, mono-xsp4
 
@@ -67,49 +67,40 @@ It is recommended to start this image first with empty `~/.config/MonoDevelop-5.
  your home. When using mono-gide for the 2nd time, those dirs will be copied from
  your home.
 
+
 ## Development
-No tests are repeated from mono-ide, because I expect them to be passed if
- mono-ide image was published.
-
 ### Dependencies
-Bash, IDE, and Docker daemon. Needed is docker IDE image with:
-  * Docker daemon
-  * IDE (we run IDE in IDE; for end user tests)
-  * ruby
+* Bash
+* Docker daemon
+* Bats
+* Ide
 
-All the below tests are supposed to be invoked inside an IDE docker image:
-```bash
-ide
-bundle install
-```
+### Tests
+No tests are repeated from mono-ide, because we expect them to be passed if
+mono-ide image was published.
 
-### Fast tests
-```bash
-# Run repocritic linting.
-bundle exec rake style
-```
-
-### Build
-Build docker image. This will generate imagerc file.
-
-```bash
-bundle exec rake build
-```
-
-### Long tests
-Having built the docker image, there are tests available:
-
-```bash
-# RSpec tests invoke ide command using Idefiles and the just built docker
-# image
-bundle exec rake install_ide
-bundle exec rake end_user
-```
+### Lifecycle
+1. In a feature branch:
+    * you make changes
+    * you build docker image: `./tasks build`
+    * and test it:
+      * `./tasks itest`
+      * `./tasks itest_i` -- interactively test that xfce4 desktop starts,
+      stop with ctrl+c
+1. You decide that your changes are ready and you:
+    * merge into master branch
+    * run locally:
+      * `./tasks local_bump` to update local files (changelog) with next_version
+      from OVersion OR
+      * `./tasks bump 1.2.3` to bump to a particular version
+        Version is bumped in Changelog and OVersion backend
+    * push to master onto private git server
+1. CI server (GoCD) builds, tests and releases.
 
 ### Release
 This repo has conditional code release, because we build a docker image from this image:
-  * if there are new commits in ci branch
-  * if new mono-ide docker image was published
+ * if there are new commits in master branch
+ * if new mono-ide docker image was published
 
 In the latter case there are no new commits in this git repo and release was
- already done before. Then, we only want to build and publish new docker image.
+already done before. Then, we only want to build and publish new docker image.
