@@ -114,7 +114,9 @@ case "${command}" in
       ;;
   publish)
       source_imagerc "${image_dir}"  "${imagerc_filename}"
-      production_image_tag=$(get_last_version_from_changelog "${changelog_file}")
+      base_img_version=$(base_image_last_tag)
+      this_img_version=$(get_last_version_from_changelog "${changelog_file}")
+      production_image_tag="${this_img_version}_${base_img_version}"
       docker_push "${AIT_DOCKER_IMAGE_NAME}" "${AIT_DOCKER_IMAGE_TAG}" "${production_image_tag}"
       exit $?
       ;;

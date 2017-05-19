@@ -1,3 +1,7 @@
+### 0.2.1 (2017-May-19)
+
+* \#11120 fix publish task to tag docker image as "${this_img_version}_${base_img_version}"
+
 ### 0.2.0 (2017-May-18)
 
 * \#11100 install visual studio and extensions
