@@ -93,10 +93,10 @@ mono-ide image was published.
 1. You decide that your changes are ready and you:
     * merge into master branch
     * run locally:
-      * `./tasks local_bump` to update local files (changelog) with next_version
+      * `./tasks prepare_code_release` to update local files (changelog) with next_version
       from OVersion OR
-      * `./tasks bump 1.2.3` to bump to a particular version
-        Version is bumped in Changelog and OVersion backend
+      * `./tasks set_version 1.2.3` to set version to a particular version
+        Version is set in Changelog and OVersion backend
     * push to master onto private git server
 1. CI server (GoCD) builds, tests and releases.
 

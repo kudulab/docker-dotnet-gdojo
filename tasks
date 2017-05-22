@@ -39,12 +39,12 @@ function source_imagerc {
 
 command="$1"
 case "${command}" in
-  local_bump)
+  prepare_code_release)
       next_version=$(get_next_oversion)
       set_version_in_changelog "${changelog_file}" "${next_version}"
       exit $?
       ;;
-  bump)
+  set_version)
       bump_changelog_and_oversion "$2"
       exit $?
       ;;
@@ -53,17 +53,10 @@ case "${command}" in
       git fetch origin
       current_commit_git_tags=$(git tag -l --points-at HEAD)
       if [[ "${current_commit_git_tags}" != "" ]];then
-        log_info "Current commit is already tagged, partial verify_version"
-        version_from_changelog=$(get_last_version_from_changelog "${changelog_file}")
-        version_from_oversion=$(get_next_oversion)
-        if [[ "${version_from_changelog}" != "${version_from_oversion}" ]]; then
-          log_error "version_from_changelog: ${version_from_changelog} != version_from_oversion: ${version_from_oversion}"
-          exit 1
-        fi
-        log_info "Version verified successfully"
+         log_info "Current commit is already tagged"
       else
-        log_info "Current commit has no tags, full verify_version"
-        verify_version_for_release
+         log_info "Current commit has no tags, full verify_version"
+         verify_version_for_release
       fi
       exit $?
       ;;
