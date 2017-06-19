@@ -1,3 +1,7 @@
+### 0.2.3 (2017-Jun-19)
+
+switch to elastic agents
+
 ### 0.2.2 (2017-May-22)
 
 * fix release cycle, do check version when already tagged
