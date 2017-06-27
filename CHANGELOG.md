@@ -1,3 +1,9 @@
+### 0.3.0 (2017-Jun-27)
+
+ * added `xdot`
+ * updated plugins
+ * added new C# plugin - for XML docs
+
 ### 0.2.3 (2017-Jun-19)
 
 switch to elastic agents

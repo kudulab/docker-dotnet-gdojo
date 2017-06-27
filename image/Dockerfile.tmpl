@@ -15,7 +15,7 @@ RUN wget http://security.debian.org/debian-security/pool/updates/main/libg/libgc
   rm libgcrypt11_1.5.0-5+deb7u5_amd64.deb &&\
   apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get -y install monodevelop monodevelop-nunit \
-  monodevelop-versioncontrol mono-xsp4 &&\
+  monodevelop-versioncontrol mono-xsp4 xdot &&\
   mkdir /tmp/MonoDevelop.FSharpBinding.5.5.0 && cd /tmp/MonoDevelop.FSharpBinding.5.5.0 &&\
   wget http://addins.monodevelop.com/Stable/Linux/5.5/MonoDevelop.FSharpBinding-5.5.0.mpack &&\
   unzip MonoDevelop.FSharpBinding-5.5.0.mpack && cd /tmp &&\
@@ -46,7 +46,7 @@ RUN chown ide:ide /home/ide/.config/MonoDevelop-5.0/MonoDevelopProperties.xml \
   /home/ide/.local/share/MonoDevelop-5.0/Snippets/log.template.xml
 
 # Install visual studio
-ENV VSCODE_VERSION="1.12.2"
+ENV VSCODE_VERSION="1.13.1"
 RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
   libxss1 libnotify4 libnss3 libxkbfile1 libgconf-2-4 &&\
@@ -54,10 +54,11 @@ RUN apt-get update &&\
   wget -O code.deb https://vscode-update.azurewebsites.net/${VSCODE_VERSION}/linux-deb-x64/stable &&\
   dpkg -i code.deb && rm code.deb
 # Install visual studio extensions
-ENV OMNISHARP_VSCODE_VERSION="1.10.0-beta3" \
-  IONIDE_VSCODE_FSHARP_VERSION="2.25.12" \
+ENV OMNISHARP_VSCODE_VERSION="1.11.0" \
+  IONIDE_VSCODE_FSHARP_VERSION="2.27.6" \
   IONIDE_VSCODE_FAKE_VERSION="1.2.3" \
-  IONIDE_VSCODE_PACKET_VERSION="1.6.3"
+  IONIDE_VSCODE_PACKET_VERSION="1.7.0" \
+  VSCODE_DOCOMMENT_VERSION="0.0.16"
 RUN wget https://github.com/OmniSharp/omnisharp-vscode/releases/download/v${OMNISHARP_VSCODE_VERSION}/csharp-${OMNISHARP_VSCODE_VERSION}.vsix  &&\
   sudo -E -H -u ide /bin/bash -c "code --install-extension csharp-${OMNISHARP_VSCODE_VERSION}.vsix" &&\
   rm csharp-${OMNISHARP_VSCODE_VERSION}.vsix &&\
@@ -69,7 +70,10 @@ RUN wget https://github.com/OmniSharp/omnisharp-vscode/releases/download/v${OMNI
   rm Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix &&\
   wget https://github.com/ionide/ionide-vscode-paket/releases/download/${IONIDE_VSCODE_PACKET_VERSION}/Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
   sudo -E -H -u ide /bin/bash -c "code --install-extension Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix" &&\
-  rm Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix
+  rm Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
+  wget https://github.com/k--kato/vscode-docomment/releases/download/v${VSCODE_DOCOMMENT_VERSION}/docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
+  sudo -E -H -u ide /bin/bash -c "code --install-extension docomment-${VSCODE_DOCOMMENT_VERSION}.vsix" &&\
+  rm docomment-${VSCODE_DOCOMMENT_VERSION}.vsix
 # Install vscode settings
 COPY vscode_settings.json /home/ide/.config/Code/User/settings.json
 RUN chown ide:ide /home/ide/.config/Code/User/settings.json
