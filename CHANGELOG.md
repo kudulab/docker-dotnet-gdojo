@@ -1,3 +1,7 @@
+### 0.3.1 (2017-Jun-28)
+
+ * downgrade vscode to `1.12.2`, buggy intellisense in `1.13.0` 
+
 ### 0.3.0 (2017-Jun-27)
 
  * added `xdot`
