@@ -10,9 +10,8 @@ FROM docker-registry.ai-traders.com/mono-ide:{{BASE_IMAGE_VERSION}}
 # which is not in debian jessie apt sources, so let's install it from wheezy
 # https://packages.debian.org/wheezy/libgcrypt11
 # * then install F# language bindings
-RUN wget http://security.debian.org/debian-security/pool/updates/main/libg/libgcrypt11/libgcrypt11_1.5.0-5+deb7u5_amd64.deb &&\
-  dpkg -i libgcrypt11_1.5.0-5+deb7u5_amd64.deb &&\
-  rm libgcrypt11_1.5.0-5+deb7u5_amd64.deb &&\
+RUN wget -O libgcrypt11.deb http://security.debian.org/debian-security/pool/updates/main/libg/libgcrypt11/libgcrypt11_1.5.0-5+deb7u6_amd64.deb &&\
+  dpkg -i libgcrypt11.deb && rm libgcrypt11.deb &&\
   apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get -y install monodevelop monodevelop-nunit \
   monodevelop-versioncontrol mono-xsp4 xdot &&\
@@ -81,5 +80,5 @@ RUN chown ide:ide /home/ide/.config/Code/User/settings.json
 COPY etc_ide.d/scripts/* /etc/ide.d/scripts/
 COPY etc_ide.d/variables/*.sh /etc/ide.d/variables
 
-ENTRYPOINT ["/usr/bin/tini", "-g", "--", "/usr/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

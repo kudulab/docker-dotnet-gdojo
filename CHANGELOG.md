@@ -1,6 +1,12 @@
+### 0.3.3 (2017-Aug-17)
+
+* libgcrypt11_1.5.0-5+deb7u6_amd64.deb does not exist any more on
+ http://security.debian.org/, but libgcrypt11_1.5.0-5+deb7u6_amd64.deb does
+* do not use tini
+
 ### 0.3.1 (2017-Jun-28)
 
- * downgrade vscode to `1.12.2`, buggy intellisense in `1.13.0` 
+ * downgrade vscode to `1.12.2`, buggy intellisense in `1.13.0`
 
 ### 0.3.0 (2017-Jun-27)
 
