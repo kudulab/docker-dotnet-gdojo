@@ -1,3 +1,9 @@
+### 0.3.4 (2017-Aug-18)
+
+* fix: monodevelop 5.10 is not found in apt source:
+`deb http://download.mono-project.com/repo/debian jessie/snapshots/5.2.0.215 main`
+ so let's add debian stretch apt source #11176
+
 ### 0.3.3 (2017-Aug-17)
 
 * libgcrypt11_1.5.0-5+deb7u6_amd64.deb does not exist any more on

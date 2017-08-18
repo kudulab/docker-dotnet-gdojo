@@ -22,13 +22,16 @@ with:
 ## Usage
 1. Install [IDE](https://github.com/ai-traders/ide)
 2. Provide an Idefile:
+
 ```
 # mono-gide is tagged as: <THIS_IMAGE_VERSION>_<BASE_IMAGE_VERSION>
 IDE_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:0.1.0_0.1.0"
 # or just:
 IDE_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:latest"
 ```
+
 3. Run, example commands:
+
 ```bash
 # to run monodevelop (your terminal must be interactive):
 ide
