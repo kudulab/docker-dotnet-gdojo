@@ -3,6 +3,8 @@
 * fix: monodevelop 5.10 is not found in apt source:
 `deb http://download.mono-project.com/repo/debian jessie/snapshots/5.2.0.215 main`
  so let's add debian stretch apt source #11176
+* fix: "libXtst.so.6: cannot open shared object file: No such file or directory"
+ when installing visual studio code extensions
 
 ### 0.3.3 (2017-Aug-17)
 

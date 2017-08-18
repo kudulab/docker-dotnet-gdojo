@@ -41,13 +41,19 @@ RUN chown ide:ide /home/ide/.config/MonoDevelop-5.0/MonoDevelopProperties.xml \
   /home/ide/.local/share/MonoDevelop-5.0/Snippets/log.template.xml
 
 # Install visual studio
+# * libxtst6 is needed if installing on debian jessie and using MonoDevelop
+# from debian stretch sources. Otherwise there is an error which makes it
+# impossible to install vs extensions:
+# $ code --version
+# /usr/share/code/bin/../code: error while loading shared libraries: libXtst.so.6: cannot open shared object file: No such file or directory
 ENV VSCODE_VERSION="1.12.2"
 RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
-  libxss1 libnotify4 libnss3 libxkbfile1 libgconf-2-4 &&\
+  libxss1 libnotify4 libnss3 libxkbfile1 libgconf-2-4 libxtst6 &&\
   apt-get clean && rm -rf /tmp/* /var/tmp/* && rm -rf /var/lib/apt/lists/* &&\
   wget -O code.deb https://vscode-update.azurewebsites.net/${VSCODE_VERSION}/linux-deb-x64/stable &&\
   dpkg -i code.deb && rm code.deb
+
 # Install visual studio extensions
 ENV OMNISHARP_VSCODE_VERSION="1.11.0" \
   IONIDE_VSCODE_FSHARP_VERSION="2.27.6" \
