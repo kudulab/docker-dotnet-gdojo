@@ -79,6 +79,10 @@ RUN wget https://github.com/OmniSharp/omnisharp-vscode/releases/download/v${OMNI
 COPY vscode_settings.json /home/ide/.config/Code/User/settings.json
 RUN chown ide:ide /home/ide/.config/Code/User/settings.json
 
+# For Bash
+COPY bashrc_default /home/ide/.bashrc
+RUN chown ide:ide -R /home/ide
+
 COPY etc_ide.d/scripts/* /etc/ide.d/scripts/
 COPY etc_ide.d/variables/*.sh /etc/ide.d/variables
 
