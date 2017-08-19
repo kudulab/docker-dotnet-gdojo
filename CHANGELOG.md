@@ -1,3 +1,5 @@
+### 0.3.5 (2017-Aug-19)
+
 * update vscode extensions:
   * omnisharp-vscode 1.12.1
   * vscode-fsharp 2.33.2
