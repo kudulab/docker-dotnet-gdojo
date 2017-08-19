@@ -12,6 +12,7 @@ RUN echo "deb http://ftp.debian.org/debian stretch main" > /etc/apt/sources.list
   rm -rf /tmp/* /var/tmp/* && rm -rf /var/lib/apt/lists/*
 
 # Install monodevelop bindings
+# * FSharpBinding - http://addins.monodevelop.com/Project/Index/48
 RUN mkdir /tmp/MonoDevelop.FSharpBinding.5.5.0 && cd /tmp/MonoDevelop.FSharpBinding.5.5.0 &&\
   wget http://addins.monodevelop.com/Stable/Linux/5.5/MonoDevelop.FSharpBinding-5.5.0.mpack &&\
   unzip MonoDevelop.FSharpBinding-5.5.0.mpack && cd /tmp &&\
@@ -55,11 +56,15 @@ RUN apt-get update &&\
   dpkg -i code.deb && rm code.deb
 
 # Install visual studio extensions
-ENV OMNISHARP_VSCODE_VERSION="1.11.0" \
-  IONIDE_VSCODE_FSHARP_VERSION="2.27.6" \
+# * http://gogs.ai-traders.com:3333/stcdev/vsix-csharpextensions builds vsix
+# package of https://github.com/jchannon/csharpextensions
+ENV OMNISHARP_VSCODE_VERSION="1.12.1" \
+  IONIDE_VSCODE_FSHARP_VERSION="2.33.2" \
   IONIDE_VSCODE_FAKE_VERSION="1.2.3" \
-  IONIDE_VSCODE_PACKET_VERSION="1.7.0" \
-  VSCODE_DOCOMMENT_VERSION="0.0.16"
+  IONIDE_VSCODE_PACKET_VERSION="1.7.3" \
+  VSCODE_DOCOMMENT_VERSION="0.0.17" \
+  CSHARPEXTENSIONS_VERSION="1.3.0" \
+  VSCODE_DOCKER_VERSION="0.0.16"
 RUN wget https://github.com/OmniSharp/omnisharp-vscode/releases/download/v${OMNISHARP_VSCODE_VERSION}/csharp-${OMNISHARP_VSCODE_VERSION}.vsix  &&\
   sudo -E -H -u ide /bin/bash -c "code --install-extension csharp-${OMNISHARP_VSCODE_VERSION}.vsix" &&\
   rm csharp-${OMNISHARP_VSCODE_VERSION}.vsix &&\
@@ -74,7 +79,14 @@ RUN wget https://github.com/OmniSharp/omnisharp-vscode/releases/download/v${OMNI
   rm Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
   wget https://github.com/k--kato/vscode-docomment/releases/download/v${VSCODE_DOCOMMENT_VERSION}/docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
   sudo -E -H -u ide /bin/bash -c "code --install-extension docomment-${VSCODE_DOCOMMENT_VERSION}.vsix" &&\
-  rm docomment-${VSCODE_DOCOMMENT_VERSION}.vsix
+  rm docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
+  wget -O csharpextensions.vsix http://http.archive.ai-traders.com/csharpextensions/${CSHARPEXTENSIONS_VERSION}/csharpextensions-${CSHARPEXTENSIONS_VERSION}.vsix &&\
+  sudo -E -H -u ide /bin/bash -c "code --install-extension csharpextensions.vsix" &&\
+  rm csharpextensions.vsix &&\
+  wget -O vscode-docker.vsix http://http.archive.ai-traders.com/vscode-docker/${VSCODE_DOCKER_VERSION}/vscode-docker-${VSCODE_DOCKER_VERSION}.vsix &&\
+  sudo -E -H -u ide /bin/bash -c "code --install-extension vscode-docker.vsix" &&\
+  rm vscode-docker.vsix
+
 # Install vscode settings
 COPY vscode_settings.json /home/ide/.config/Code/User/settings.json
 RUN chown ide:ide /home/ide/.config/Code/User/settings.json

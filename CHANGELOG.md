@@ -1,3 +1,14 @@
+* update vscode extensions:
+  * omnisharp-vscode 1.12.1
+  * vscode-fsharp 2.33.2
+  * vscode-packet 1.7.3
+  * vscode-docomment 0.0.17
+* add new vscode extensions:
+  * csharpextensions 1.3.0 (from a specified commit, not git tag,
+    http://gogs.ai-traders.com/stcdev/vsix-csharpextensions)
+  * vscode-docker 0.0.16 (from a specified commit, not git tag,
+    http://gogs.ai-traders.com/stcdev/vsix-vscode-docker)
+
 ### 0.3.4 (2017-Aug-18)
 
 * fix: monodevelop 5.10 is not found in apt source:
