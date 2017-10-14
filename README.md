@@ -6,7 +6,7 @@ An IDE docker image with C# CLI and graphical tools. Based on [mono-ide](http://
 All what's in [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide) and:
  * MonoDevelop 5.10
  * monodevelop-nunit, monodevelop-versioncontrol, mono-xsp4
- * Visual Studio Code 1.12.2
+ * Visual Studio Code 1.17.1
  * Visual Studio Code extensions: Ionide.Ionide-FAKE, Ionide.Ionide-fsharp,
  Ionide.Ionide-Paket, ms-vscode.csharp (omnisharp-vscode)
 

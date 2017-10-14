@@ -1,3 +1,9 @@
+### 0.4.0 (2017-Oct-14)
+
+* updated vscode - 1.17.1
+* updated vscode-fsharp - 3.5.1
+* updated omnisharp-vscode - 1.13.0-beta3
+
 ### 0.3.5 (2017-Aug-19)
 
 * update vscode extensions:
@@ -27,7 +33,7 @@
 
 ### 0.3.1 (2017-Jun-28)
 
- * downgrade vscode to `1.12.2`, buggy intellisense in `1.13.0`
+ * downgrade vscode to `1.17.1`, buggy intellisense in `1.13.0`
 
 ### 0.3.0 (2017-Jun-27)
 
