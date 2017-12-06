@@ -38,10 +38,7 @@ function copy_file(){
 # not obligatory files or directories, copy them:
 copy_file "${ide_identity}/.local/share/MonoDevelop-5.0" "${ide_home}/.local/share" "false"
 copy_file "${ide_identity}/.local/share/recently-used.xbel" "${ide_home}/.local/share" "true"
-copy_file "${ide_identity}/.mono" "${ide_home}" "false"
 copy_file "${ide_identity}/.config/MonoDevelop" "${ide_home}/.config" "false"
 copy_file "${ide_identity}/.config/MonoDevelop-5.0" "${ide_home}/.config" "false"
-copy_file "${ide_identity}/.config/NuGet" "${ide_home}/.config" "false"
 copy_file "${ide_identity}/.config/gtk-2.0" "${ide_home}/.config" "false"
 copy_file "${ide_identity}/.config/stetic" "${ide_home}/.config" "false"
-copy_file "${ide_identity}/.config/xbuild" "${ide_home}/.config" "false"

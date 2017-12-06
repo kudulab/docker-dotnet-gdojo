@@ -1,3 +1,7 @@
+### 0.4.1 (2017-Dec-06)
+
+ * do not copy nuget config and alike from users home, base image has correct config
+
 ### 0.4.0 (2017-Oct-14)
 
 * updated vscode - 1.17.1

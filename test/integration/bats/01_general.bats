@@ -11,8 +11,6 @@ load '/opt/bats-assert/load.bash'
   assert_line --partial "Copying /ide/identity/.local/share/MonoDevelop-5.0"
   assert_line --partial "Copying /ide/identity/.config/MonoDevelop-5.0"
   assert_line --partial "Copying /ide/identity/.config/stetic"
-  assert_line --partial "Copying /ide/identity/.mono"
-  assert_line --partial "/ide/identity/.config/xbuild does not exist, won't copy"
   refute_output "root"
   assert_equal "$status" 0
 }
