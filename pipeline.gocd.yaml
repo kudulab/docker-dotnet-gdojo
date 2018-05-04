@@ -17,7 +17,8 @@ pipelines:
           clean_workspace: true
           jobs:
             verify_version:
-              elastic_profile_id: w.c1.m1024.e5
+              resources:
+                - docker_builder
               tasks:
                - exec:
                   command: /bin/bash
@@ -62,7 +63,8 @@ pipelines:
           clean_workspace: true
           jobs:
             code:
-              elastic_profile_id: w.c1.m1024.e5
+              resources:
+                - docker_builder
               tasks:
                 - exec:
                     command: /bin/bash

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Policies>
+  <PolicySet name="User Default" id="UserDefault">
+    <DotNetNamingPolicy inheritsSet="Default">
+      <DirectoryNamespaceAssociation>Hierarchical</DirectoryNamespaceAssociation>
+    </DotNetNamingPolicy>
+  </PolicySet>
+</Policies>

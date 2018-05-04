@@ -1,3 +1,12 @@
+### 0.5.0 - Unreleased
+
+updated
+ * vscode 1.23.0
+ * omnisharp-vscode 1.15.0-beta6
+ * ionide-fsharp 3.19.4
+ * vscode paket 1.9.1
+ * monodevelop 7.4
+
 ### 0.4.1 (2017-Dec-06)
 
  * do not copy nuget config and alike from users home, base image has correct config

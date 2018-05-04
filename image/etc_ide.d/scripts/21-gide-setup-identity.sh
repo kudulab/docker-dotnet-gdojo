@@ -35,10 +35,5 @@ function copy_file(){
   fi
 }
 
-# not obligatory files or directories, copy them:
-copy_file "${ide_identity}/.local/share/MonoDevelop-5.0" "${ide_home}/.local/share" "false"
-copy_file "${ide_identity}/.local/share/recently-used.xbel" "${ide_home}/.local/share" "true"
-copy_file "${ide_identity}/.config/MonoDevelop" "${ide_home}/.config" "false"
-copy_file "${ide_identity}/.config/MonoDevelop-5.0" "${ide_home}/.config" "false"
-copy_file "${ide_identity}/.config/gtk-2.0" "${ide_home}/.config" "false"
-copy_file "${ide_identity}/.config/stetic" "${ide_home}/.config" "false"
+chown -R ide:ide /home/ide/.local/share/MonoDevelop
+chown -R ide:ide /home/ide/.config/MonoDevelop/7.0/
