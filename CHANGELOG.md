@@ -1,4 +1,4 @@
-### 0.5.0 - Unreleased
+### 0.5.0 (2018-May-05)
 
 updated
  * vscode 1.23.0
@@ -6,6 +6,8 @@ updated
  * ionide-fsharp 3.19.4
  * vscode paket 1.9.1
  * monodevelop 7.4
+
+Installing vscode-omnisharp from package with bundled omnisharp and Core debugger.
 
 ### 0.4.1 (2017-Dec-06)
 
