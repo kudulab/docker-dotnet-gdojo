@@ -2,10 +2,9 @@
 # I added {{ }} so that docker build fails if it is not replaced.
 FROM docker-registry.ai-traders.com/mono-ide:{{BASE_IMAGE_VERSION}}
 
-# next is 7.5.0.1222-0xamarin1+debian8b1
-ENV MONODEVELOP_VERSION 7.4.0.1033-0xamarin57+debian8b1
+ENV MONODEVELOP_VERSION 7.5.0.1254-0xamarin1+debian9b1
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF &&\
-  echo "deb http://download.mono-project.com/repo/debian vs-jessie main" | sudo tee /etc/apt/sources.list.d/mono-official-vs.list &&\
+  echo "deb http://download.mono-project.com/repo/debian vs-stretch main" | sudo tee /etc/apt/sources.list.d/mono-official-vs.list &&\
   apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends\
   monodevelop=${MONODEVELOP_VERSION} monodevelop-nunit=${MONODEVELOP_VERSION} monodevelop-versioncontrol=${MONODEVELOP_VERSION} mono-xsp4 xdot &&\
@@ -16,7 +15,7 @@ COPY monodevelop-config/ /home/ide/.config/MonoDevelop/7.0
 COPY monodevelop-local-config/ /home/ide/.local/share/MonoDevelop/7.0
 
 # Install visual studio code
-ENV VSCODE_VERSION="1.23.0"
+ENV VSCODE_VERSION="1.27.2"
 RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
   libasound2 libatk1.0-0 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
@@ -29,10 +28,10 @@ RUN apt-get update &&\
 # Install visual studio extensions
 # * http://gogs.ai-traders.com:3333/stcdev/vsix-csharpextensions builds vsix
 # package of https://github.com/jchannon/csharpextensions
-ENV OMNISHARP_VSCODE_VERSION="1.15.0-beta6" \
-  IONIDE_VSCODE_FSHARP_VERSION="3.19.4" \
+ENV OMNISHARP_VSCODE_VERSION="1.16.1" \
+  IONIDE_VSCODE_FSHARP_VERSION="3.27.0" \
   IONIDE_VSCODE_FAKE_VERSION="1.2.3" \
-  IONIDE_VSCODE_PACKET_VERSION="1.9.1" \
+  IONIDE_VSCODE_PACKET_VERSION="1.12.0" \
   VSCODE_DOCOMMENT_VERSION="0.1.0" \
   CSHARPEXTENSIONS_VERSION="1.3.0" \
   VSCODE_DOCKER_VERSION="0.0.16"

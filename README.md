@@ -4,9 +4,9 @@ An IDE docker image with C# CLI and graphical tools. Based on [mono-ide](http://
 
 ## Specification
 All what's in [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide) and:
- * MonoDevelop 5.10
+ * MonoDevelop 7.5
  * monodevelop-nunit, monodevelop-versioncontrol, mono-xsp4
- * Visual Studio Code 1.17.1
+ * Visual Studio Code 1.27.2
  * Visual Studio Code extensions: Ionide.Ionide-FAKE, Ionide.Ionide-fsharp,
  Ionide.Ionide-Paket, ms-vscode.csharp (omnisharp-vscode)
 
@@ -25,7 +25,7 @@ with:
 
 ```
 # mono-gide is tagged as: <THIS_IMAGE_VERSION>_<BASE_IMAGE_VERSION>
-IDE_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:0.1.0_0.1.0"
+IDE_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:1.0.0_2.0.1"
 # or just:
 IDE_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:latest"
 ```
@@ -57,14 +57,6 @@ Those files are used inside the ide docker image:
 2. `~/.gitconfig` -- if exists locally, will be copied
 3. `~/.profile` -- will be generated on docker container start, in
    order to ensure current directory is `/ide/work`.
-4. `~/.config/MonoDevelop`, `~/.config/MonoDevelop-5.0`, `~/.config/Nuget`,
-`~/.config/gtk-2.0`, `~/.config/stetic`, `~/.config/xbuild` -- if exist locally,
- will be copied. However, there is
- already the file `/home/ide/.config/MonoDevelop-5.0/MonoDevelopProperties.xml`
- burned into mono-gide.
-5. `~/.local/share/MonoDevelop-5.0` -- if exists locally, will be copied. However, there are
-already `/home/ide/.local/share/MonoDevelop-5.0/Policies/Default.mdpolicy.xml`
-and `/home/ide/.local/share/MonoDevelop-5.0/Snippets/log.template.xml` burned into mono-gide.
 5. `~/.local/share/recently-used.xbel` -- if exists locally, will be copied.
 6. `~/.mono` -- if exists locally, will be copied.
 

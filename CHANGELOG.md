@@ -1,3 +1,11 @@
+### 1.0.0 (2018-Sep-27)
+
+Updated base image to debian stretch.
+Updated tools:
+ * vscode 1.27.2
+ * omnisharp-vscode 1.61.1
+ * vscode paket 1.12.0
+
 ### 0.5.0 (2018-May-05)
 
 updated
