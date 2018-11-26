@@ -1,3 +1,7 @@
+### 1.1.0 (2018-Nov-26)
+
+ionide, use .net core runtime for F\# compiler service
+
 ### 1.0.0 (2018-Sep-27)
 
 Updated base image to debian stretch.
