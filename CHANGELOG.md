@@ -1,3 +1,7 @@
+### 1.1.1 (2018-Nov-28)
+
+Improvements to make vscode faster on large project \#12074
+
 ### 1.1.0 (2018-Nov-26)
 
 ionide, use .net core runtime for F\# compiler service

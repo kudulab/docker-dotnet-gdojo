@@ -1,4 +1,7 @@
 {
     "workbench.colorTheme": "Default Light+",
-    "FSharp.fsacRuntime": "netcore"
+    "FSharp.fsacRuntime": "netcore",
+    "FSharp.resolveNamespaces": false,
+    "FSharp.externalAutocomplete": false,
+    "FSharp.minimizeBackgroundParsing": true
 }
