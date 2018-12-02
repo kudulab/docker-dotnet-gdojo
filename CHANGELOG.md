@@ -1,3 +1,7 @@
+### 1.1.2 (2018-Dec-02)
+
+fix repo key setup
+
 ### 1.1.1 (2018-Nov-28)
 
 Improvements to make vscode faster on large project \#12074
