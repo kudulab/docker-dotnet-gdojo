@@ -71,9 +71,6 @@ case "${command}" in
       image_name_no_registry="${image_name/docker-registry.ai-traders.com\//}"
       base_img_version=$(base_image_last_tag)
       this_img_version=$(get_next_oversion)
-      # we use variables file here, because base image (mono-ide) uses them as well
-      sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" image/etc_dojo.d/variables/60-variables.sh.tmpl > image/etc_dojo.d/variables/60-variables.sh
-      sed -i "s/{{THIS_IMAGE_VERSION}}/${this_img_version}/g" image/etc_dojo.d/variables/60-variables.sh
       sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" image/Dockerfile.tmpl > image/Dockerfile
       docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "$2"
       exit $?

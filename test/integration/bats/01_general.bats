@@ -7,7 +7,6 @@ load '/opt/bats-assert/load.bash'
   echo "output: $output"
   assert_line --partial "dojo init finished"
   assert_line --partial "/dojo/work"
-  assert_line --partial "using mono-gide"
   refute_output "root"
   assert_equal "$status" 0
 }
