@@ -1,3 +1,5 @@
+* transform from ide docker image to dojo docker image #17139
+
 ### 1.1.2 (2018-Dec-02)
 
 fix repo key setup

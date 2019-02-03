@@ -72,8 +72,8 @@ case "${command}" in
       base_img_version=$(base_image_last_tag)
       this_img_version=$(get_next_oversion)
       # we use variables file here, because base image (mono-ide) uses them as well
-      sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" image/etc_ide.d/variables/60-variables.sh.tmpl > image/etc_ide.d/variables/60-variables.sh
-      sed -i "s/{{THIS_IMAGE_VERSION}}/${this_img_version}/g" image/etc_ide.d/variables/60-variables.sh
+      sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" image/etc_dojo.d/variables/60-variables.sh.tmpl > image/etc_dojo.d/variables/60-variables.sh
+      sed -i "s/{{THIS_IMAGE_VERSION}}/${this_img_version}/g" image/etc_dojo.d/variables/60-variables.sh
       sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" image/Dockerfile.tmpl > image/Dockerfile
       docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "$2"
       exit $?
@@ -81,19 +81,19 @@ case "${command}" in
   itest)
       source_imagerc
       echo "Testing image: ${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}"
-      echo "IDE_DOCKER_IMAGE=\"${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}\"" > ./Idefile.to_be_tested
-      echo "IDE_IDENTITY=\"$(pwd)/test/integration/identities/full\"" >> ./Idefile.to_be_tested
-      echo "IDE_WORK=$(pwd)/test/integration/test_ide_work" >> ./Idefile.to_be_tested
+      echo "DOJO_DOCKER_IMAGE=\"${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}\"" > ./Dojofile.to_be_tested
+      echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
+      echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
       time bats "$(pwd)/test/integration/bats"
       exit $?
       ;;
   itest_i)
       source_imagerc
       echo "Testing image: ${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}"
-      echo "IDE_DOCKER_IMAGE=\"${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}\"" > ./Idefile.to_be_tested
-      echo "IDE_IDENTITY=\"$(pwd)/test/integration/identities/full\"" >> ./Idefile.to_be_tested
-      echo "IDE_WORK=$(pwd)/test/integration/test_ide_work" >> ./Idefile.to_be_tested
-      ide --idefile ./Idefile.to_be_tested
+      echo "DOJO_DOCKER_IMAGE=\"${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}\"" > ./Dojofile.to_be_tested
+      echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
+      echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
+      dojo -c ./Dojofile.to_be_tested
       exit $?
       ;;
   release)

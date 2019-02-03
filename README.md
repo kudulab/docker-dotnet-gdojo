@@ -1,6 +1,6 @@
 # docker-mono-gide
 
-An IDE docker image with C# CLI and graphical tools. Based on [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide).
+A Dojo docker image with C# CLI and graphical tools. Based on [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide).
 
 ## Specification
 All what's in [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide) and:
@@ -20,43 +20,43 @@ with:
    * set SourceAnalysis -> Enable text editor unit test integration
 
 ## Usage
-1. Install [IDE](https://github.com/ai-traders/ide)
-2. Provide an Idefile:
+1. Install [Dojo](https://github.com/ai-traders/dojo)
+2. Provide an Dojofile:
 
 ```
 # mono-gide is tagged as: <THIS_IMAGE_VERSION>_<BASE_IMAGE_VERSION>
-IDE_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:1.0.0_2.0.1"
+DOJO_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:1.0.0_2.0.1"
 # or just:
-IDE_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:latest"
+DOJO_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:latest"
 ```
 
 3. Run, example commands:
 
 ```bash
 # to run monodevelop (your terminal must be interactive):
-ide
+dojo
 
 # or this way:
-ide /bin/bash
+dojo /bin/bash
 monodevelop &
 
 # to run any mono command like in mono-ide, e.g.:
-ide cd stc-vince && ./build.sh CopyBinaries
+dojo "cd stc-vince && ./build.sh CopyBinaries"
 ```
 
 By default:
- * current directory in docker container is `/ide/work`.
+ * current directory in docker container is `/dojo/work`.
  * default command is `monodevelop` and it starts in a new graphical window
 
 ### Configuration
-Those files are used inside the ide docker image:
+Those files are used inside the dojo docker image:
 
 1. `~/.ssh/config` -- will be generated on docker container start
 2. `~/.ssh/id_rsa` -- it must exist locally, because it is a secret
  (but the whole `~/.ssh` will be copied)
 2. `~/.gitconfig` -- if exists locally, will be copied
 3. `~/.profile` -- will be generated on docker container start, in
-   order to ensure current directory is `/ide/work`.
+   order to ensure current directory is `/dojo/work`.
 5. `~/.local/share/recently-used.xbel` -- if exists locally, will be copied.
 6. `~/.mono` -- if exists locally, will be copied.
 

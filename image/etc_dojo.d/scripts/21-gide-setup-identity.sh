@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 ###########################################################################
-# This file ensures files are mapped from ide_identity into ide_home.
+# This file ensures files are mapped from dojo_identity into dojo_home.
 # Fails if any required secret or configuration file is missing.
 ###########################################################################
 
@@ -26,7 +26,7 @@ function copy_file(){
   if [[ "$is_file" == true && -f "${source}" ]] ||
      [[ "$is_file" == false && -d "${source}" ]]; then
     mkdir -p "${destination}"
-    chown ide:ide "${destination}"
+    chown dojo:dojo "${destination}"
     echo "Copying ${source} into ${destination}"
     # this turns bash into debug mode for just 1 command, it uses subshell
     ( set -x; cp -r "${source}" "${destination}"; )
@@ -35,5 +35,5 @@ function copy_file(){
   fi
 }
 
-chown -R ide:ide /home/ide/.local/share/MonoDevelop
-chown -R ide:ide /home/ide/.config/MonoDevelop/7.0/
+chown -R dojo:dojo /home/dojo/.local/share/MonoDevelop
+chown -R dojo:dojo /home/dojo/.config/MonoDevelop/7.0/

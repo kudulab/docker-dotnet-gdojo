@@ -325,7 +325,7 @@
   <Property key="refactoring.codeissues.text/x-csharp.ICSharpCode.NRefactory.CSharp.Refactoring.NonReadonlyReferencedInGetHashCodeIssue.isEnabled" value="True" />
   <Property key="refactoring.codeissues.text/x-csharp.ICSharpCode.NRefactory.CSharp.Refactoring.AutoAsyncIssue" value="Hint" />
   <Property key="refactoring.codeissues.text/x-csharp.MonoDevelop.CSharp.Refactoring.CodeIssues.MonoTODOIssue" value="Warning" />
-  <Property key="MonoDevelop.FileSelector.LastPath" value="/ide/work" />
+  <Property key="MonoDevelop.FileSelector.LastPath" value="/dojo/work" />
   <Property key="MonoDevelop.Debugger.DebuggingService.EnginePriority" value="Mono.Debugger.Soft,Mono.Debugger.Soft.Custom,Mono.Debugger.Soft.AspNet" />
   <Property key="refactoring.codeissues.text/x-csharp.ICSharpCode.NRefactory.CSharp.Refactoring.ReplaceWithOfTypeIssue.isEnabled" value="True" />
   <Property key="refactoring.codeissues.text/x-csharp.ICSharpCode.NRefactory.CSharp.Refactoring.FieldCanBeMadeReadOnlyIssue" value="Suggestion" />

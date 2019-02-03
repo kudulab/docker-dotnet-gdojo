@@ -11,8 +11,8 @@ RUN apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3
   apt-get -y autoremove && apt-get -y autoclean && apt-get -y clean &&\
   rm -rf /tmp/* /var/tmp/* && rm -rf /var/lib/apt/lists/*
 
-COPY monodevelop-config/ /home/ide/.config/MonoDevelop/7.0
-COPY monodevelop-local-config/ /home/ide/.local/share/MonoDevelop/7.0
+COPY monodevelop-config/ /home/dojo/.config/MonoDevelop/7.0
+COPY monodevelop-local-config/ /home/dojo/.local/share/MonoDevelop/7.0
 
 # Install visual studio code
 ENV VSCODE_VERSION="1.27.2"
@@ -36,37 +36,37 @@ ENV OMNISHARP_VSCODE_VERSION="1.16.1" \
   CSHARPEXTENSIONS_VERSION="1.3.0" \
   VSCODE_DOCKER_VERSION="0.0.16"
 RUN wget http://os2.ai-traders.com:6780/swift/v1/omnisharp-vscode/csharp.${OMNISHARP_VSCODE_VERSION}-linux-x86_64.vsix  &&\
-  sudo -E -H -u ide /bin/bash -c "code --install-extension csharp.${OMNISHARP_VSCODE_VERSION}-linux-x86_64.vsix" &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension csharp.${OMNISHARP_VSCODE_VERSION}-linux-x86_64.vsix" &&\
   rm csharp.${OMNISHARP_VSCODE_VERSION}-linux-x86_64.vsix &&\
   wget https://github.com/ionide/ionide-vscode-fsharp/releases/download/${IONIDE_VSCODE_FSHARP_VERSION}/Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix &&\
-  sudo -E -H -u ide /bin/bash -c "code --install-extension Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix" &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix" &&\
   rm Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix &&\
   wget https://github.com/ionide/ionide-vscode-fake/releases/download/${IONIDE_VSCODE_FAKE_VERSION}/Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix &&\
-  sudo -E -H -u ide /bin/bash -c "code --install-extension Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix" &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix" &&\
   rm Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix &&\
   wget https://github.com/ionide/ionide-vscode-paket/releases/download/${IONIDE_VSCODE_PACKET_VERSION}/Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
-  sudo -E -H -u ide /bin/bash -c "code --install-extension Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix" &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix" &&\
   rm Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
   wget https://github.com/k--kato/vscode-docomment/releases/download/v${VSCODE_DOCOMMENT_VERSION}/docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
-  sudo -E -H -u ide /bin/bash -c "code --install-extension docomment-${VSCODE_DOCOMMENT_VERSION}.vsix" &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension docomment-${VSCODE_DOCOMMENT_VERSION}.vsix" &&\
   rm docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
   wget -O csharpextensions.vsix http://http.archive.ai-traders.com/csharpextensions/${CSHARPEXTENSIONS_VERSION}/csharpextensions-${CSHARPEXTENSIONS_VERSION}.vsix &&\
-  sudo -E -H -u ide /bin/bash -c "code --install-extension csharpextensions.vsix" &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension csharpextensions.vsix" &&\
   rm csharpextensions.vsix &&\
   wget -O vscode-docker.vsix http://http.archive.ai-traders.com/vscode-docker/${VSCODE_DOCKER_VERSION}/vscode-docker-${VSCODE_DOCKER_VERSION}.vsix &&\
-  sudo -E -H -u ide /bin/bash -c "code --install-extension vscode-docker.vsix" &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension vscode-docker.vsix" &&\
   rm vscode-docker.vsix
 
 # Install vscode settings
-COPY vscode_settings.json /home/ide/.config/Code/User/settings.json
-RUN chown ide:ide /home/ide/.config/Code/User/settings.json
+COPY vscode_settings.json /home/dojo/.config/Code/User/settings.json
+RUN chown dojo:dojo /home/dojo/.config/Code/User/settings.json
 
 # For Bash
-COPY bashrc_default /home/ide/.bashrc
-RUN chown ide:ide -R /home/ide
+COPY bashrc_default /home/dojo/.bashrc
+RUN chown dojo:dojo -R /home/dojo
 
-COPY etc_ide.d/scripts/* /etc/ide.d/scripts/
-COPY etc_ide.d/variables/*.sh /etc/ide.d/variables
+COPY etc_dojo.d/scripts/* /etc/dojo.d/scripts/
+COPY etc_dojo.d/variables/*.sh /etc/dojo.d/variables
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

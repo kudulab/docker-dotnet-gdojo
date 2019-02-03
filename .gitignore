@@ -2,12 +2,12 @@
 releaser
 docker-ops
 image/Dockerfile
-Idefile.to_be_tested
+Dojofile.to_be_tested
 60-variables.sh
 
 **/*.html
 **/real_identity/**
 **/identities/real/**
 **/dummy_work/**
-**/test_ide_work/stc-*
-**/test_ide_work/*Idefile*
+**/test_dojo_work/stc-*
+**/test_dojo_work/*Dojofile*
