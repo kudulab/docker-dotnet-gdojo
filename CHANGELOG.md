@@ -1,3 +1,7 @@
+### 2.0.1 (2019-Apr-28)
+
+* use newer ops scripts, do not use oversion
+
 ### 2.0.0 (2019-Feb-03)
 
 * transform from ide docker image to dojo docker image #17139

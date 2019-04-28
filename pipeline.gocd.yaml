@@ -24,7 +24,7 @@ pipelines:
                   command: /bin/bash
                   arguments:
                     - -c
-                    - ./tasks verify_version
+                    - ./tasks verify
       - build:
           clean_workspace: true
           jobs:
@@ -40,7 +40,7 @@ pipelines:
                   command: /bin/bash
                   arguments:
                     - -c
-                    - ops_docker_push=true ./tasks build
+                    - ./tasks build
       - itest:
           clean_workspace: true
           jobs:

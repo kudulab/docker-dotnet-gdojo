@@ -1,20 +1,35 @@
 #!/bin/bash
 
 set -e
-if [[ ! -f ./releaser ]];then
-  wget --quiet http://http.archive.ai-traders.com/releaser/1.0.0/releaser
-fi
-source ./releaser
-if [[ ! -f ./docker-ops ]];then
-  wget --quiet http://http.archive.ai-traders.com/docker-ops/0.2.2/docker-ops
-fi
-source ./docker-ops
-# This goes as last in order to let end user variables override default values
-releaser_init
 
-image_name="docker-registry.ai-traders.com/mono-gide"
+RELEASER_VERSION="2.1.0"
+DOCKER_OPS_VERSION="2.0.0"
+SECRET_OPS_VERSION="0.6.1"
+
+SECRET_OPS_FILE="ops/secret-ops"
+SECRET_OPS_TAR_FILE="ops/secret-ops-${SECRET_OPS_VERSION}.tar.gz"
+RELEASER_FILE="ops/releaser-${RELEASER_VERSION}"
+DOCKER_OPS_FILE="ops/docker-ops-${DOCKER_OPS_VERSION}"
+
+mkdir -p ops
+if [[ ! -f $RELEASER_FILE ]];then
+  wget --quiet -O $RELEASER_FILE https://github.com/kudulab/releaser/releases/download/${RELEASER_VERSION}/releaser
+fi
+source $RELEASER_FILE
+if [[ ! -f $DOCKER_OPS_FILE ]];then
+  wget --quiet -O $DOCKER_OPS_FILE https://github.com/kudulab/docker-ops/releases/download/${DOCKER_OPS_VERSION}/docker-ops
+fi
+source $DOCKER_OPS_FILE
+if [[ ! -f $SECRET_OPS_TAR_FILE ]];then
+  wget --quiet -O $SECRET_OPS_TAR_FILE https://github.com/kudulab/secret-ops/releases/download/${SECRET_OPS_VERSION}/secret-ops.tar.gz
+  tar -xf $SECRET_OPS_TAR_FILE -C ops
+fi
+source $SECRET_OPS_FILE
+
+image_name="mono-gide"
 image_dir="./image"
 imagerc_filename="imagerc"
+image_registry="docker-registry.ai-traders.com"
 
 function base_image_last_tag {
   git_tag=$(git ls-remote --tags git@git.ai-traders.com:stcdev/docker-mono-ide.git | sort -t '/' -k 3 -V | awk '{print $2}' | cut -d'/' -f3 | tail -1)
@@ -25,96 +40,68 @@ function base_image_last_tag {
   echo "${git_tag}"
 }
 
-function source_imagerc {
-  source "${image_dir}/${imagerc_filename}"
-  if [[ -z "AIT_DOCKER_IMAGE_NAME" ]]; then
-    echo "fail! AIT_DOCKER_IMAGE_NAME not set"
-    return 1
-  fi
-  if [[ -z "AIT_DOCKER_IMAGE_TAG" ]]; then
-    echo "fail! AIT_DOCKER_IMAGE_TAG not set"
-    return 1
-  fi
-}
-
+set +u
 command="$1"
 case "${command}" in
-  prepare_code_release)
-      next_version=$(get_next_oversion)
-      set_version_in_changelog "${changelog_file}" "${next_version}"
-      exit $?
-      ;;
   set_version)
-      if [[ -n "$2" ]]; then
-        next_version="$2"
-        set_version_in_changelog "${changelog_file}" "${next_version}"
-        set_next_oversion "${next_version}"
-      else
-        next_version=$(get_next_oversion)
-        set_version_in_changelog "${changelog_file}" "${next_version}"
-      fi
+      releaser::bump_changelog_version "$2" "$3"
       exit $?
       ;;
-  verify_version)
+  verify)
       # conditional verify
       git fetch origin
       current_commit_git_tags=$(git tag -l --points-at HEAD)
       if [[ "${current_commit_git_tags}" != "" ]];then
-         log_info "Current commit is already tagged"
+         echo "Current commit is already tagged"
       else
-         log_info "Current commit has no tags, full verify_version"
-         verify_version_for_release
+         echo "Current commit has no tags, full verify"
+         releaser::verify_release_ready
       fi
       exit $?
       ;;
   build)
-      image_name_no_registry="${image_name/docker-registry.ai-traders.com\//}"
       base_img_version=$(base_image_last_tag)
-      this_img_version=$(get_next_oversion)
-      sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" image/Dockerfile.tmpl > image/Dockerfile
-      docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "$2"
+      if [[ -z "${GO_PIPELINE_LABEL}" ]];then
+        # set to the latest git commit hash
+        ci_version=$(git rev-parse HEAD)
+      else
+        ci_version="${GO_PIPELINE_LABEL}"
+      fi
+      image_tag="${ci_version}"
+      sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" ${image_dir}/Dockerfile.tmpl > ${image_dir}/Dockerfile
+      docker_ops::docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
+      docker_ops::push "${image_dir}" "${imagerc_filename}"
       exit $?
       ;;
   itest)
-      source_imagerc
-      echo "Testing image: ${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}"
-      echo "DOJO_DOCKER_IMAGE=\"${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}\"" > ./Dojofile.to_be_tested
+      docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
+      echo "Testing image: ${KUDU_DOCKER_IMAGE_URL}"
+      echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
       echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
       echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
       time bats "$(pwd)/test/integration/bats"
       exit $?
       ;;
   itest_i)
-      source_imagerc
-      echo "Testing image: ${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}"
-      echo "DOJO_DOCKER_IMAGE=\"${AIT_DOCKER_IMAGE_NAME}:${AIT_DOCKER_IMAGE_TAG}\"" > ./Dojofile.to_be_tested
+      docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
+      echo "Testing image: ${KUDU_DOCKER_IMAGE_URL}"
+      echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
       echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
       echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
       dojo -c ./Dojofile.to_be_tested
       exit $?
       ;;
   release)
-      # conditional release
-      git fetch origin
-      current_commit_git_tags=$(git tag -l --points-at HEAD)
-      if [[ "${current_commit_git_tags}" != "" ]];then
-        log_info "Current commit is already tagged, skipping code release"
-      else
-        log_info "Current commit has no tags, starting code release..."
-        verify_version_for_release
-        git_tag_from_oversion
-        old_version=$(get_next_oversion)
-        next_version=$(bump_patch_version "${old_version}")
-        set_next_oversion "${next_version}"
-      fi
+      ./tasks verify
+      releaser::conditional_release
       exit $?
       ;;
   publish)
-      source_imagerc "${image_dir}"  "${imagerc_filename}"
       base_img_version=$(base_image_last_tag)
-      this_img_version=$(get_last_version_from_changelog "${changelog_file}")
-      production_image_tag="${this_img_version}_${base_img_version}"
-      docker_push "${AIT_DOCKER_IMAGE_NAME}" "${AIT_DOCKER_IMAGE_TAG}" "${production_image_tag}"
+      this_img_version=$(releaser::get_last_version_from_whole_changelog "${changelog_file}")
+      image_tag="${this_img_version}_${base_img_version}"
+      docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
+      docker_ops::retag_push "${image_dir}"  "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
       exit $?
       ;;
   *)

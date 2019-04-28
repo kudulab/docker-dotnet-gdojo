@@ -1,6 +1,5 @@
 **/imagerc*
-releaser
-docker-ops
+ops/*
 image/Dockerfile
 Dojofile.to_be_tested
 60-variables.sh
