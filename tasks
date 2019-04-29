@@ -30,9 +30,12 @@ image_name="mono-gide"
 image_dir="./image"
 imagerc_filename="imagerc"
 image_registry="docker-registry.ai-traders.com"
+base_image_name="kudulab/dotnet-dojo"
+base_image_git_repo="git@github.com:kudulab/docker-dotnet-dojo.git"
 
 function base_image_last_tag {
-  git_tag=$(git ls-remote --tags git@git.ai-traders.com:stcdev/docker-mono-ide.git | sort -t '/' -k 3 -V | awk '{print $2}' | cut -d'/' -f3 | tail -1)
+  local base_git_repo=${1?base_git_repo not set}
+  git_tag=$(git ls-remote --tags ${base_git_repo} | sort -t '/' -k 3 -V | awk '{print $2}' | cut -d'/' -f3 | tail -1)
   if [[ "${git_tag}" == "" ]];then
     echo "fail! getting git tag from base image failed"
     return 1
@@ -60,7 +63,7 @@ case "${command}" in
       exit $?
       ;;
   build)
-      base_img_version=$(base_image_last_tag)
+      base_image_version=$(base_image_last_tag "${base_image_git_repo}")
       if [[ -z "${GO_PIPELINE_LABEL}" ]];then
         # set to the latest git commit hash
         ci_version=$(git rev-parse HEAD)
@@ -68,9 +71,14 @@ case "${command}" in
         ci_version="${GO_PIPELINE_LABEL}"
       fi
       image_tag="${ci_version}"
-      sed "s/{{BASE_IMAGE_VERSION}}/${base_img_version}/g" ${image_dir}/Dockerfile.tmpl > ${image_dir}/Dockerfile
+      echo "aaa ${image_tag}"
+      echo "aaa ${base_image_version}"
+      echo "aaa ${base_image_name}"
+      sed "s;{{BASE_IMAGE_NAME}};${base_image_name};g" ${image_dir}/Dockerfile.tmpl > ${image_dir}/Dockerfile.temp
+      sed "s;{{BASE_IMAGE_VERSION}};${base_image_version};g" ${image_dir}/Dockerfile.temp > ${image_dir}/Dockerfile
+      echo "Generated Dockerfile"
       docker_ops::docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
-      docker_ops::push "${image_dir}" "${imagerc_filename}"
+      #docker_ops::push "${image_dir}" "${imagerc_filename}"
       exit $?
       ;;
   itest)
@@ -97,9 +105,9 @@ case "${command}" in
       exit $?
       ;;
   publish)
-      base_img_version=$(base_image_last_tag)
-      this_img_version=$(releaser::get_last_version_from_whole_changelog "${changelog_file}")
-      image_tag="${this_img_version}_${base_img_version}"
+      base_image_version=$(base_image_last_tag "${base_image_git_repo}")
+      this_image_version=$(releaser::get_last_version_from_whole_changelog "${changelog_file}")
+      image_tag="${this_image_version}_${baseimage_version}"
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
       docker_ops::retag_push "${image_dir}"  "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
       exit $?

@@ -1,9 +1,10 @@
 # docker-mono-gide
 
-A Dojo docker image with C# CLI and graphical tools. Based on [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide).
+A [Dojo](https://github.com/ai-traders/dojo) docker image with graphical tools for dotnet development.
+Based on [docker-dotnet-dojo](https://github.com/kudulab/docker-dotnet-dojo) image.
 
 ## Specification
-All what's in [mono-ide](http://gogs.ai-traders.com/stcdev/docker-mono-ide) and:
+All what's in [docker-dotnet-dojo](https://github.com/kudulab/docker-dotnet-dojo) and:
  * MonoDevelop 7.5
  * monodevelop-nunit, monodevelop-versioncontrol, mono-xsp4
  * Visual Studio Code 1.27.2
@@ -33,20 +34,15 @@ DOJO_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:latest"
 3. Run, example commands:
 
 ```bash
-# to run monodevelop (your terminal must be interactive):
 dojo
-
-# or this way:
-dojo /bin/bash
 monodevelop &
+code &
 
-# to run any mono command like in mono-ide, e.g.:
+# to run any mono command like in the base image, e.g.:
 dojo "cd stc-vince && ./build.sh CopyBinaries"
 ```
 
-By default:
- * current directory in docker container is `/dojo/work`.
- * default command is `monodevelop` and it starts in a new graphical window
+By default current directory in docker container is `/dojo/work`.
 
 ### Configuration
 Those files are used inside the dojo docker image:
@@ -61,8 +57,8 @@ Those files are used inside the dojo docker image:
 6. `~/.mono` -- if exists locally, will be copied.
 
 It is recommended to start this image first with empty `~/.config/MonoDevelop-5.0`
- and `~/.local/share/MonoDevelop-5.0` and then to copy them from mono-gide into
- your home. When using mono-gide for the 2nd time, those dirs will be copied from
+ and `~/.local/share/MonoDevelop-5.0` and then to copy them from the dotnet-gdojo into
+ your home. When using dotnet-gdojo for the 2nd time, those dirs will be copied from
  your home.
 
 
@@ -71,11 +67,11 @@ It is recommended to start this image first with empty `~/.config/MonoDevelop-5.
 * Bash
 * Docker daemon
 * Bats
-* Ide
+* Dojo
 
 ### Tests
-No tests are repeated from mono-ide, because we expect them to be passed if
-mono-ide image was published.
+No tests are repeated from the base image, because we expect them to be passed if
+the base image was published.
 
 ### Lifecycle
 1. In a feature branch:
@@ -88,17 +84,14 @@ mono-ide image was published.
 1. You decide that your changes are ready and you:
     * merge into master branch
     * run locally:
-      * `./tasks prepare_code_release` to update local files (changelog) with next_version
-      from OVersion OR
-      * `./tasks set_version 1.2.3` to set version to a particular version
-        Version is set in Changelog and OVersion backend
+      * `./tasks set_version 1.2.3` to update version in changelog
     * push to master onto private git server
 1. CI server (GoCD) builds, tests and releases.
 
 ### Release
 This repo has conditional code release, because we build a docker image from this image:
  * if there are new commits in master branch
- * if new mono-ide docker image was published
+ * if new base docker image was published
 
 In the latter case there are no new commits in this git repo and release was
 already done before. Then, we only want to build and publish new docker image.

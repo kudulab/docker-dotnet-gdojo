@@ -1,3 +1,9 @@
+### 2.1.0 (2019-Apr-29)
+
+* change base image to kudulab/dotnet-dojo
+* use newer vscode-docker 0.6.1
+* download more tools from the Internet instead of from private servers
+
 ### 2.0.1 (2019-Apr-28)
 
 * use newer ops scripts, do not use oversion

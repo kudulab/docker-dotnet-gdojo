@@ -1,6 +1,6 @@
 # {{BASE_IMAGE_VERSION}} must be replaced with existing git tag.
 # I added {{ }} so that docker build fails if it is not replaced.
-FROM docker-registry.ai-traders.com/mono-ide:{{BASE_IMAGE_VERSION}}
+FROM {{BASE_IMAGE_NAME}}:{{BASE_IMAGE_VERSION}}
 
 ENV MONODEVELOP_VERSION 7.5.0.1254-0xamarin1+debian9b1
 RUN apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF &&\
@@ -34,10 +34,10 @@ ENV OMNISHARP_VSCODE_VERSION="1.16.1" \
   IONIDE_VSCODE_PACKET_VERSION="1.12.0" \
   VSCODE_DOCOMMENT_VERSION="0.1.0" \
   CSHARPEXTENSIONS_VERSION="1.3.0" \
-  VSCODE_DOCKER_VERSION="0.0.16"
-RUN wget http://os2.ai-traders.com:6780/swift/v1/omnisharp-vscode/csharp.${OMNISHARP_VSCODE_VERSION}-linux-x86_64.vsix  &&\
-  sudo -E -H -u dojo /bin/bash -c "code --install-extension csharp.${OMNISHARP_VSCODE_VERSION}-linux-x86_64.vsix" &&\
-  rm csharp.${OMNISHARP_VSCODE_VERSION}-linux-x86_64.vsix &&\
+  VSCODE_DOCKER_VERSION="0.6.1"
+RUN wget -O csharp.vsix https://github.com/OmniSharp/omnisharp-vscode/releases/download/v${OMNISHARP_VSCODE_VERSION}/csharp-${OMNISHARP_VSCODE_VERSION}.vsix &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension csharp.vsix" &&\
+  rm csharp.vsix &&\
   wget https://github.com/ionide/ionide-vscode-fsharp/releases/download/${IONIDE_VSCODE_FSHARP_VERSION}/Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix" &&\
   rm Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix &&\
@@ -50,12 +50,14 @@ RUN wget http://os2.ai-traders.com:6780/swift/v1/omnisharp-vscode/csharp.${OMNIS
   wget https://github.com/k--kato/vscode-docomment/releases/download/v${VSCODE_DOCOMMENT_VERSION}/docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension docomment-${VSCODE_DOCOMMENT_VERSION}.vsix" &&\
   rm docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
-  wget -O csharpextensions.vsix http://http.archive.ai-traders.com/csharpextensions/${CSHARPEXTENSIONS_VERSION}/csharpextensions-${CSHARPEXTENSIONS_VERSION}.vsix &&\
-  sudo -E -H -u dojo /bin/bash -c "code --install-extension csharpextensions.vsix" &&\
-  rm csharpextensions.vsix &&\
-  wget -O vscode-docker.vsix http://http.archive.ai-traders.com/vscode-docker/${VSCODE_DOCKER_VERSION}/vscode-docker-${VSCODE_DOCKER_VERSION}.vsix &&\
+  wget -O vscode-docker.vsix https://github.com/Microsoft/vscode-docker/releases/download/v${VSCODE_DOCKER_VERSION}/vscode-docker-${VSCODE_DOCKER_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension vscode-docker.vsix" &&\
   rm vscode-docker.vsix
+# This is an archived project with no binaries published, we have to
+# either get them from a local cache or stop using this project.
+RUN wget -O csharpextensions.vsix http://http.archive.ai-traders.com/csharpextensions/${CSHARPEXTENSIONS_VERSION}/csharpextensions-${CSHARPEXTENSIONS_VERSION}.vsix &&\
+  sudo -E -H -u dojo /bin/bash -c "code --install-extension csharpextensions.vsix" &&\
+  rm csharpextensions.vsix
 
 # Install vscode settings
 COPY vscode_settings.json /home/dojo/.config/Code/User/settings.json

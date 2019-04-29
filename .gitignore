@@ -1,6 +1,7 @@
 **/imagerc*
 ops/*
 image/Dockerfile
+image/Dockerfile.temp
 Dojofile.to_be_tested
 60-variables.sh
 
