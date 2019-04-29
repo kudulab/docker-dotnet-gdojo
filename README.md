@@ -1,4 +1,4 @@
-# docker-mono-gide
+# docker-dotnet-gdojo
 
 A [Dojo](https://github.com/ai-traders/dojo) docker image with graphical tools for dotnet development.
 Based on [docker-dotnet-dojo](https://github.com/kudulab/docker-dotnet-dojo) image.
@@ -25,10 +25,8 @@ with:
 2. Provide an Dojofile:
 
 ```
-# mono-gide is tagged as: <THIS_IMAGE_VERSION>_<BASE_IMAGE_VERSION>
-DOJO_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:1.0.0_2.0.1"
-# or just:
-DOJO_DOCKER_IMAGE="docker-registry.ai-traders.com/mono-gide:latest"
+# this image is tagged as: <THIS_IMAGE_VERSION>_<BASE_IMAGE_VERSION>
+DOJO_DOCKER_IMAGE="docker-registry.ai-traders.com/dotnet-gdojo:3.0.0_3.1.0"
 ```
 
 3. Run, example commands:

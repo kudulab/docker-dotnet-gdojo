@@ -1,16 +1,16 @@
 pipelines:
-  docker-mono-gide:
-    group: stcdev
+  docker-dotnet-gdojo:
+    group: liget
     label_template: "${git[:8]}"
     materials:
       git:
-        git: "git@git.ai-traders.com:stcdev/docker-mono-gide.git"
+        git: "git@git.ai-traders.com:stcdev/docker-dotnet-gdojo.git"
         branch: master
         blacklist:
           - "doc/**/*"
           - "**/*.md"
       monoide:
-        pipeline: docker-mono-ide
+        pipeline: docker-dotnet-dojo
         stage: publish
     stages:
       - verify_version:

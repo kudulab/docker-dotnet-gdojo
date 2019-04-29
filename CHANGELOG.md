@@ -1,3 +1,7 @@
+### 3.0.0 (2019-Apr-29)
+
+* rename to docker-dotnet-gdojo
+
 ### 2.1.0 (2019-Apr-29)
 
 * change base image to kudulab/dotnet-dojo
