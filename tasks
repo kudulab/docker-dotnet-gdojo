@@ -71,14 +71,11 @@ case "${command}" in
         ci_version="${GO_PIPELINE_LABEL}"
       fi
       image_tag="${ci_version}"
-      echo "aaa ${image_tag}"
-      echo "aaa ${base_image_version}"
-      echo "aaa ${base_image_name}"
       sed "s;{{BASE_IMAGE_NAME}};${base_image_name};g" ${image_dir}/Dockerfile.tmpl > ${image_dir}/Dockerfile.temp
       sed "s;{{BASE_IMAGE_VERSION}};${base_image_version};g" ${image_dir}/Dockerfile.temp > ${image_dir}/Dockerfile
       echo "Generated Dockerfile"
       docker_ops::docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
-      #docker_ops::push "${image_dir}" "${imagerc_filename}"
+      docker_ops::push "${image_dir}" "${imagerc_filename}"
       exit $?
       ;;
   itest)
@@ -107,7 +104,8 @@ case "${command}" in
   publish)
       base_image_version=$(base_image_last_tag "${base_image_git_repo}")
       this_image_version=$(releaser::get_last_version_from_whole_changelog "${changelog_file}")
-      image_tag="${this_image_version}_${baseimage_version}"
+      set -u
+      image_tag="${this_image_version}_${base_image_version}"
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
       docker_ops::retag_push "${image_dir}"  "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
       exit $?

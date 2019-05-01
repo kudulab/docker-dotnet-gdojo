@@ -1,3 +1,8 @@
+### 3.0.1 (2019-May-01)
+
+* remove debug statements
+* fix docker image tag
+
 ### 3.0.0 (2019-Apr-29)
 
 * rename to docker-dotnet-gdojo
