@@ -22,63 +22,24 @@ DOJO_DOCKER_IMAGE="kudulab/dotnet-gdojo:3.0.0_3.1.0"
 
 ```bash
 dojo
-monodevelop &
 code &
-
-# to run any mono command like in the base image, e.g.:
-dojo "cd stc-vince && ./build.sh CopyBinaries"
 ```
 
 By default current directory in docker container is `/dojo/work`.
 
-### Configuration
-Those files are used inside the dojo docker image:
 
-1. `~/.ssh/config` -- will be generated on docker container start
-2. `~/.ssh/id_rsa` -- it must exist locally, because it is a secret
- (but the whole `~/.ssh` will be copied)
-2. `~/.gitconfig` -- if exists locally, will be copied
-3. `~/.profile` -- will be generated on docker container start, in
-   order to ensure current directory is `/dojo/work`.
-5. `~/.local/share/recently-used.xbel` -- if exists locally, will be copied.
-6. `~/.mono` -- if exists locally, will be copied.
+## License
 
-It is recommended to start this image first with empty `~/.config/MonoDevelop-5.0`
- and `~/.local/share/MonoDevelop-5.0` and then to copy them from the dotnet-gdojo into
- your home. When using dotnet-gdojo for the 2nd time, those dirs will be copied from
- your home.
+ Copyright 2019 Ewa Czechowska, Tomasz Sętkowski
 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-## Development
-### Dependencies
-* Bash
-* Docker daemon
-* Bats
-* Dojo
+     http://www.apache.org/licenses/LICENSE-2.0
 
-### Tests
-No tests are repeated from the base image, because we expect them to be passed if
-the base image was published.
-
-### Lifecycle
-1. In a feature branch:
-    * you make changes
-    * you build docker image: `./tasks build`
-    * and test it:
-      * `./tasks itest`
-      * `./tasks itest_i` -- interactively test that xfce4 desktop starts,
-      stop with ctrl+c
-1. You decide that your changes are ready and you:
-    * merge into master branch
-    * run locally:
-      * `./tasks set_version 1.2.3` to update version in changelog
-    * push to master onto private git server
-1. CI server (GoCD) builds, tests and releases.
-
-### Release
-This repo has conditional code release, because we build a docker image from this image:
- * if there are new commits in master branch
- * if new base docker image was published
-
-In the latter case there are no new commits in this git repo and release was
-already done before. Then, we only want to build and publish new docker image.
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
