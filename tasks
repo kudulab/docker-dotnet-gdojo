@@ -35,8 +35,8 @@ base_image_name="kudulab/dotnet-dojo"
 base_image_git_repo="git@github.com:kudulab/docker-dotnet-dojo.git"
 
 function base_image_last_tag {
-  if [ -n "${GO_REVISION_BASE}" ]; then
-    git_tag=$(git ls-remote -t $base_image_git_repo | grep "${GO_REVISION_BASE}")
+  if [ -n "${GO_DEPENDENCY_LABEL_BASE}" ]; then
+    git_tag=$(git ls-remote -t $base_image_git_repo | grep "${GO_DEPENDENCY_LABEL_BASE}" | awk -F "/" '{print $3}')
   else
     git_tag="latest"
   fi
