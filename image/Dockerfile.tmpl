@@ -2,23 +2,11 @@
 # I added {{ }} so that docker build fails if it is not replaced.
 FROM {{BASE_IMAGE_NAME}}:{{BASE_IMAGE_VERSION}}
 
-ENV MONODEVELOP_VERSION 7.5.0.1254-0xamarin1+debian9b1
-RUN apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF &&\
-  echo "deb http://download.mono-project.com/repo/debian vs-stretch main" | sudo tee /etc/apt/sources.list.d/mono-official-vs.list &&\
-  apt-get update &&\
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends\
-  monodevelop=${MONODEVELOP_VERSION} monodevelop-nunit=${MONODEVELOP_VERSION} monodevelop-versioncontrol=${MONODEVELOP_VERSION} mono-xsp4 xdot &&\
-  apt-get -y autoremove && apt-get -y autoclean && apt-get -y clean &&\
-  rm -rf /tmp/* /var/tmp/* && rm -rf /var/lib/apt/lists/*
-
-COPY monodevelop-config/ /home/dojo/.config/MonoDevelop/7.0
-COPY monodevelop-local-config/ /home/dojo/.local/share/MonoDevelop/7.0
-
 # Install visual studio code
 ENV VSCODE_VERSION="1.27.2"
 RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
-  libasound2 libatk1.0-0 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
+  libgtk-3-0 libasound2 libatk1.0-0 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
   libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 \
   libxtst6 libsecret-1-0 libxss1 libnotify4 libnss3 libxkbfile1 libgconf-2-4 libxtst6 &&\
   apt-get clean && rm -rf /tmp/* /var/tmp/* && rm -rf /var/lib/apt/lists/* &&\

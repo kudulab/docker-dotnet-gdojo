@@ -1,3 +1,7 @@
+### 3.1.0 (2019-Jun-09)
+* removed monodevelop
+* updated build system
+
 ### 3.0.1 (2019-May-01)
 
 * remove debug statements

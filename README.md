@@ -5,20 +5,9 @@ Based on [docker-dotnet-dojo](https://github.com/kudulab/docker-dotnet-dojo) ima
 
 ## Specification
 All what's in [docker-dotnet-dojo](https://github.com/kudulab/docker-dotnet-dojo) and:
- * MonoDevelop 7.5
- * monodevelop-nunit, monodevelop-versioncontrol, mono-xsp4
  * Visual Studio Code 1.27.2
  * Visual Studio Code extensions: Ionide.Ionide-FAKE, Ionide.Ionide-fsharp,
  Ionide.Ionide-Paket, ms-vscode.csharp (omnisharp-vscode)
-
-with:
- * F# language support
- * custom snippet (template) to create log4net object
- * custom properties:
-   * enable code folding
-   * do not fold comments by default
-   * syntax highlighting - visual studio
-   * set SourceAnalysis -> Enable text editor unit test integration
 
 ## Usage
 1. Install [Dojo](https://github.com/ai-traders/dojo)
@@ -26,7 +15,7 @@ with:
 
 ```
 # this image is tagged as: <THIS_IMAGE_VERSION>_<BASE_IMAGE_VERSION>
-DOJO_DOCKER_IMAGE="docker-registry.ai-traders.com/dotnet-gdojo:3.0.0_3.1.0"
+DOJO_DOCKER_IMAGE="kudulab/dotnet-gdojo:3.0.0_3.1.0"
 ```
 
 3. Run, example commands:

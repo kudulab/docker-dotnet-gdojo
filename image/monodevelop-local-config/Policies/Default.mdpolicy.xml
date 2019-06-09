@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Policies>
-  <PolicySet name="Default" id="Default">
-    <DotNetNamingPolicy>
-      <DirectoryNamespaceAssociation>Hierarchical</DirectoryNamespaceAssociation>
-      <ResourceNamePolicy>FileFormatDefault</ResourceNamePolicy>
-    </DotNetNamingPolicy>
-  </PolicySet>
-</Policies>
