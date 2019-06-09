@@ -17,7 +17,6 @@ load '/opt/bats-assert/load.bash'
   assert_line --partial "Ionide.Ionide-Paket"
   assert_line --partial "k--kato.docomment"
   assert_line --partial "ms-vscode.csharp"
-  assert_line --partial "jchannon.csharpextensions"
   assert_line --partial "PeterJausovec.vscode-docker"
   assert_equal "$status" 0
 }
