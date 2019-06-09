@@ -15,18 +15,6 @@ pipelines:
     secure_variables:
       VAULT_TOKEN: "AES:Dl15kWOR4UuAxeRLVhuqxw==:rp9BrzeZ58v2GqVIOk9KiQCgcmjEiZNn9akIiXvbeq0="
     stages:
-      - verify_version:
-          clean_workspace: true
-          jobs:
-            verify_version:
-              resources:
-                - docker_builder
-              tasks:
-               - exec:
-                  command: /bin/bash
-                  arguments:
-                    - -c
-                    - ./tasks verify
       - build:
           clean_workspace: true
           jobs:
