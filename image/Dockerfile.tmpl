@@ -41,11 +41,6 @@ RUN wget -O csharp.vsix https://github.com/OmniSharp/omnisharp-vscode/releases/d
   wget -O vscode-docker.vsix https://github.com/Microsoft/vscode-docker/releases/download/v${VSCODE_DOCKER_VERSION}/vscode-docker-${VSCODE_DOCKER_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension vscode-docker.vsix" &&\
   rm vscode-docker.vsix
-# This is an archived project with no binaries published, we have to
-# either get them from a local cache or stop using this project.
-RUN wget -O csharpextensions.vsix http://http.archive.ai-traders.com/csharpextensions/${CSHARPEXTENSIONS_VERSION}/csharpextensions-${CSHARPEXTENSIONS_VERSION}.vsix &&\
-  sudo -E -H -u dojo /bin/bash -c "code --install-extension csharpextensions.vsix" &&\
-  rm csharpextensions.vsix
 
 # Install vscode settings
 COPY vscode_settings.json /home/dojo/.config/Code/User/settings.json
