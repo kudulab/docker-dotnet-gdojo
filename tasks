@@ -4,7 +4,7 @@ set -e
 
 RELEASER_VERSION="2.1.0"
 DOCKER_OPS_VERSION="2.0.0"
-SECRET_OPS_VERSION="0.6.1"
+SECRET_OPS_VERSION="0.8.0"
 
 SECRET_OPS_FILE="ops/secret-ops"
 SECRET_OPS_TAR_FILE="ops/secret-ops-${SECRET_OPS_VERSION}.tar.gz"
@@ -26,21 +26,31 @@ if [[ ! -f $SECRET_OPS_TAR_FILE ]];then
 fi
 source $SECRET_OPS_FILE
 
-image_name="dotnet-gdojo"
+
+image_name="kudulab/dotnet-gdojo"
 image_dir="./image"
-imagerc_filename="imagerc"
-image_registry="docker-registry.ai-traders.com"
+image_registry="dockerhub"
+
 base_image_name="kudulab/dotnet-dojo"
 base_image_git_repo="git@github.com:kudulab/docker-dotnet-dojo.git"
 
 function base_image_last_tag {
-  local base_git_repo=${1?base_git_repo not set}
-  git_tag=$(git ls-remote --tags ${base_git_repo} | sort -t '/' -k 3 -V | awk '{print $2}' | cut -d'/' -f3 | tail -1)
-  if [[ "${git_tag}" == "" ]];then
-    echo "fail! getting git tag from base image failed"
-    return 1
+  if [ -n "${GO_REVISION_BASE}" ]; then
+    git_tag=$(git ls-remote -t $base_image_git_repo | grep "${GO_REVISION_BASE}")
+  else
+    git_tag="latest"
   fi
   echo "${git_tag}"
+}
+
+
+function docker_login {
+  vault_user_path=$USER
+  if [ $vault_user_path == "go" ]; then
+    vault_user_path="gocd"
+  fi
+  dockerhub_user=$(vault read -field=user secret/$vault_user_path/dockerhub)
+  vault read -field=password secret/$vault_user_path/dockerhub | docker login --username $dockerhub_user --password-stdin
 }
 
 set +u
@@ -48,7 +58,6 @@ command="$1"
 case "${command}" in
   set_version)
       releaser::bump_changelog_version "$2" "$3"
-      exit $?
       ;;
   verify)
       # conditional verify
@@ -60,9 +69,8 @@ case "${command}" in
          echo "Current commit has no tags, full verify"
          releaser::verify_release_ready
       fi
-      exit $?
       ;;
-  build)
+  build_local)
       base_image_version=$(base_image_last_tag "${base_image_git_repo}")
       if [[ -z "${GO_PIPELINE_LABEL}" ]];then
         # set to the latest git commit hash
@@ -75,44 +83,51 @@ case "${command}" in
       sed "s;{{BASE_IMAGE_VERSION}};${base_image_version};g" ${image_dir}/Dockerfile.temp > ${image_dir}/Dockerfile
       echo "Generated Dockerfile"
       docker_ops::docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
+      ;;
+  build)
+      docker_login
+      ./tasks build_local
       docker_ops::push "${image_dir}" "${imagerc_filename}"
-      exit $?
       ;;
   itest)
+      docker_login
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
       echo "Testing image: ${KUDU_DOCKER_IMAGE_URL}"
       echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
       echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
       echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
       time bats "$(pwd)/test/integration/bats"
-      exit $?
       ;;
   itest_i)
+      docker_login
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
       echo "Testing image: ${KUDU_DOCKER_IMAGE_URL}"
       echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
       echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
       echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
       dojo -c ./Dojofile.to_be_tested
-      exit $?
       ;;
   release)
       ./tasks verify
       releaser::conditional_release
-      exit $?
       ;;
   publish)
+      docker_login
       base_image_version=$(base_image_last_tag "${base_image_git_repo}")
       this_image_version=$(releaser::get_last_version_from_whole_changelog "${changelog_file}")
       set -u
       image_tag="${this_image_version}_${base_image_version}"
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
       docker_ops::retag_push "${image_dir}"  "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
-      exit $?
+      ;;
+  generate_vault_token)
+      vault_token=$(vault token create -ttl=168h -policy=gocd -field token -metadata gocd_renew=true)
+      secured_token_gocd=$(secret_ops::encrypt_with_gocd_top "${vault_token}")
+      echo "Generated token: ${vault_token} and encrypted by GoCD server"
+      secret_ops::insert_vault_token_gocd_yaml "${secured_token_gocd}"
       ;;
   *)
       echo "Invalid command: '${command}'"
       exit 1
       ;;
 esac
-set +e

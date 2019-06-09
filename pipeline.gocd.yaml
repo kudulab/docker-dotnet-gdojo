@@ -1,6 +1,7 @@
+format_version: 4
 pipelines:
   docker-dotnet-gdojo:
-    group: liget
+    group: dotnet
     label_template: "${git[:8]}"
     materials:
       git:
@@ -9,7 +10,7 @@ pipelines:
         blacklist:
           - "doc/**/*"
           - "**/*.md"
-      monoide:
+      base:
         pipeline: docker-dotnet-dojo
         stage: publish
     stages:
