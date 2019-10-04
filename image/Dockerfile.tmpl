@@ -3,7 +3,7 @@
 FROM {{BASE_IMAGE_NAME}}:{{BASE_IMAGE_VERSION}}
 
 # Install visual studio code
-ENV VSCODE_VERSION="1.27.2"
+ENV VSCODE_VERSION="1.38.1"
 RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
   libgtk-3-0 libasound2 libatk1.0-0 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
@@ -16,29 +16,33 @@ RUN apt-get update &&\
 # Install visual studio extensions
 # * http://gogs.ai-traders.com:3333/stcdev/vsix-csharpextensions builds vsix
 # package of https://github.com/jchannon/csharpextensions
-ENV OMNISHARP_VSCODE_VERSION="1.16.1" \
-  IONIDE_VSCODE_FSHARP_VERSION="3.27.0" \
-  IONIDE_VSCODE_FAKE_VERSION="1.2.3" \
-  IONIDE_VSCODE_PACKET_VERSION="1.12.0" \
-  VSCODE_DOCOMMENT_VERSION="0.1.0" \
-  CSHARPEXTENSIONS_VERSION="1.3.0" \
-  VSCODE_DOCKER_VERSION="0.6.1"
+ENV OMNISHARP_VSCODE_VERSION="1.21.4"
 RUN wget -O csharp.vsix https://github.com/OmniSharp/omnisharp-vscode/releases/download/v${OMNISHARP_VSCODE_VERSION}/csharp-${OMNISHARP_VSCODE_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension csharp.vsix" &&\
-  rm csharp.vsix &&\
-  wget https://github.com/ionide/ionide-vscode-fsharp/releases/download/${IONIDE_VSCODE_FSHARP_VERSION}/Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix &&\
-  sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix" &&\
-  rm Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix &&\
-  wget https://github.com/ionide/ionide-vscode-fake/releases/download/${IONIDE_VSCODE_FAKE_VERSION}/Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix &&\
+  rm csharp.vsix
+
+ENV IONIDE_VSCODE_FSHARP_VERSION="4.1.0"
+RUN wget https://github.com/ionide/ionide-vscode-fsharp/releases/download/${IONIDE_VSCODE_FSHARP_VERSION}/Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix &&\
+    sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix" &&\
+    rm Ionide-fsharp-${IONIDE_VSCODE_FSHARP_VERSION}.vsix
+
+ENV IONIDE_VSCODE_FAKE_VERSION="1.2.3"
+RUN wget https://github.com/ionide/ionide-vscode-fake/releases/download/${IONIDE_VSCODE_FAKE_VERSION}/Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix" &&\
-  rm Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix &&\
-  wget https://github.com/ionide/ionide-vscode-paket/releases/download/${IONIDE_VSCODE_PACKET_VERSION}/Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
+  rm Ionide-FAKE-${IONIDE_VSCODE_FAKE_VERSION}.vsix
+
+ENV IONIDE_VSCODE_PACKET_VERSION="1.12.0"
+RUN wget https://github.com/ionide/ionide-vscode-paket/releases/download/${IONIDE_VSCODE_PACKET_VERSION}/Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix" &&\
-  rm Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix &&\
-  wget https://github.com/k--kato/vscode-docomment/releases/download/v${VSCODE_DOCOMMENT_VERSION}/docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
+  rm Ionide-Paket-${IONIDE_VSCODE_PACKET_VERSION}.vsix
+
+ENV VSCODE_DOCOMMENT_VERSION="0.1.8"
+RUN wget https://github.com/k--kato/vscode-docomment/releases/download/v${VSCODE_DOCOMMENT_VERSION}/docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension docomment-${VSCODE_DOCOMMENT_VERSION}.vsix" &&\
-  rm docomment-${VSCODE_DOCOMMENT_VERSION}.vsix &&\
-  wget -O vscode-docker.vsix https://github.com/Microsoft/vscode-docker/releases/download/v${VSCODE_DOCKER_VERSION}/vscode-docker-${VSCODE_DOCKER_VERSION}.vsix &&\
+  rm docomment-${VSCODE_DOCOMMENT_VERSION}.vsix
+
+ENV VSCODE_DOCKER_VERSION="0.8.1"
+RUN wget -O vscode-docker.vsix https://github.com/Microsoft/vscode-docker/releases/download/v${VSCODE_DOCKER_VERSION}/vscode-docker-${VSCODE_DOCKER_VERSION}.vsix &&\
   sudo -E -H -u dojo /bin/bash -c "code --install-extension vscode-docker.vsix" &&\
   rm vscode-docker.vsix
 

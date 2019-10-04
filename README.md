@@ -1,11 +1,11 @@
 # docker-dotnet-gdojo
 
-A [Dojo](https://github.com/ai-traders/dojo) docker image with graphical tools for dotnet development.
+A [Dojo](https://github.com/kudulab/dojo) docker image with graphical tools for dotnet development.
 Based on [docker-dotnet-dojo](https://github.com/kudulab/docker-dotnet-dojo) image.
 
 ## Specification
 All what's in [docker-dotnet-dojo](https://github.com/kudulab/docker-dotnet-dojo) and:
- * Visual Studio Code 1.27.2
+ * Visual Studio Code 1.38.1
  * Visual Studio Code extensions: Ionide.Ionide-FAKE, Ionide.Ionide-fsharp,
  Ionide.Ionide-Paket, ms-vscode.csharp (omnisharp-vscode)
 

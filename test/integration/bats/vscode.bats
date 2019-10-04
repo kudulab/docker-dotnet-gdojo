@@ -5,7 +5,7 @@ load '/opt/bats-assert/load.bash'
   run /bin/bash -c "DISPLAY=\"\" dojo -i=false -c Dojofile.to_be_tested \"code --version\""
   # this is printed on test failure
   echo "output: $output"
-  assert_line --partial "1.27.2"
+  assert_line --partial "1.38.1"
   assert_equal "$status" 0
 }
 @test "vscode extensions are installed" {
@@ -17,6 +17,6 @@ load '/opt/bats-assert/load.bash'
   assert_line --partial "Ionide.Ionide-Paket"
   assert_line --partial "k--kato.docomment"
   assert_line --partial "ms-vscode.csharp"
-  assert_line --partial "PeterJausovec.vscode-docker"
+  assert_line --partial "ms-azuretools.vscode-docker"
   assert_equal "$status" 0
 }

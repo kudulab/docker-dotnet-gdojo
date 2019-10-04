@@ -1,3 +1,12 @@
+### 3.2.0 (2019-Oct-04)
+
+* install new vscode version 1.38.1
+* install new vscode plugin version: OmniSharp 1.21.4
+* install new vscode plugin version: ionide 4.1.0
+* install new vscode plugin version: vscode-docomment 0.1.8
+* install new vscode plugin version: vscode-docker 0.8.1
+* split installing vscode plugins into many docker image layers
+
 ### 3.1.0 (2019-Jun-09)
 * removed monodevelop
 * updated build system
