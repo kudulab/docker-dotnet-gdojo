@@ -13,7 +13,7 @@ pipelines:
         pipeline: docker-dotnet-dojo
         stage: publish
     secure_variables:
-      VAULT_TOKEN: "AES:Dl15kWOR4UuAxeRLVhuqxw==:rp9BrzeZ58v2GqVIOk9KiQCgcmjEiZNn9akIiXvbeq0="
+      VAULT_TOKEN: "AES:VwGpVruLixJ3f2vfw5jLng==:qrDHs8aGFEafDY+W97nxynXDtQx7m/rMZ6q1ZkWYXGg="
     stages:
       - build:
           clean_workspace: true
