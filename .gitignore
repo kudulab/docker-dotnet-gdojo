@@ -3,6 +3,7 @@ ops/*
 image/Dockerfile
 image/Dockerfile.temp
 Dojofile.to_be_tested
+Dojofile.example
 60-variables.sh
 
 **/*.html
