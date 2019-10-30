@@ -1,3 +1,7 @@
+### 3.2.1 (2019-Oct-30)
+
+* new vault token
+
 ### 3.2.0 (2019-Oct-04)
 
 * install new vscode version 1.38.1
